@@ -5,7 +5,7 @@ import classNames from "classnames"
 
 export default function ActiveTrack() {
   return (
-    <div className={styles.trackPlay}>
+    <div className={styles.track}>
       <div className={styles.trackContainer}>
         <div className={styles.trackImage}>
           <svg>
