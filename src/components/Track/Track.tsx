@@ -3,14 +3,14 @@ import shared from "@/components/SharedButtons/SharedButtons.module.css"
 
 
 interface Props {
-  album:       string
-  artist:      string
-  title:       string
-  additionals: string
-  duration:    string
+  album:               string
+  author:              string
+  name:                string
+  duration_in_seconds: number
+  _id:                 number
 }
 
-export default function Track({ album, artist, title, additionals, duration }: Props) {
+export default function Track({ album, author: artist, name: title, duration_in_seconds: duration, _id }: Props) {
   return (
     <div className={styles.trackContainer}>
       <div className={styles.track}>
@@ -22,7 +22,7 @@ export default function Track({ album, artist, title, additionals, duration }: P
           </div>
           <div className={styles.trackTitleText}>
             <a className={styles.trackTitleLink} href="http://">
-              {title} <span>{additionals}</span>
+              {title} {/*<span>{additionals}</span>*/}
             </a>
           </div>
         </div>

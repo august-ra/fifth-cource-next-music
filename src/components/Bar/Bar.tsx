@@ -1,4 +1,5 @@
 import styles from "./Bar.module.css"
+
 import Player from "@components/Player/Player"
 import Volume from "@components/Volume/Volume"
 
