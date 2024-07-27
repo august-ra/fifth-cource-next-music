@@ -10,7 +10,11 @@ export const metadata: Metadata = {
   description: "Listen every song everywhere",
 }
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+type RootLayoutType = Readonly<{
+  children: React.ReactNode
+}>
+
+export default function RootLayout({ children }: RootLayoutType) {
   return (
     <html lang="ru">
       <body className={montserrat.className}>{children}</body>
