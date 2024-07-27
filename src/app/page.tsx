@@ -1,5 +1,5 @@
 import Bar from "@components/Bar/Bar"
-import Main from "@/Main/Main"
+import Main from "@components/Main/Main"
 
 
 export default function Home() {
