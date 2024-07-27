@@ -1,4 +1,5 @@
 import styles from "./Track.module.css"
+import shared from "@/components/SharedButtons/SharedButtons.module.css"
 
 
 interface Props {
@@ -32,9 +33,11 @@ export default function Track({ album, artist, title, additionals, duration }: P
           <a className={styles.trackAlbumLink} href="http://">{album}</a>
         </div>
         <div className={styles.trackTime}>
-          <svg>
-            <use xlinkHref="/img/icon/sprite.svg#icon-like" />
-          </svg>
+          <div className={shared.btnIcon}>
+            <svg>
+              <use xlinkHref="/img/icon/sprite.svg#icon-like" />
+            </svg>
+          </div>
           <span className={styles.trackTimeText}>{duration}</span>
         </div>
       </div>
