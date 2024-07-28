@@ -14,7 +14,7 @@ interface Props {
 
 export default function FilterButton({ title, opened, filterList, openFilter }: Props) {
   return (
-    <div className="filter__button-wrapper">
+    <div className={styles.filterButtonWrapper}>
       <div className={classNames(styles.filterButton, shared.btnText)} onClick={() => openFilter(title)}>
         {title}
       </div>

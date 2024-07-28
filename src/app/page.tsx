@@ -2,20 +2,25 @@ import Bar from "@components/Bar/Bar"
 import Main from "@components/Main/Main"
 
 import { API } from "@/api/tracks"
-import { TrackType } from "@/types"
+import { ErrorMessage, isError, TrackType } from "@/types"
 
 
 export default async function Home() {
   let trackList: TrackType[] = []
-  let errorMsg: string = ""
+  let errorMsg:  ErrorMessage | null
 
   try {
-    trackList = await API.getTracks()
+    const data = await API.getTracks()
+
+    if (isError(data))
+      errorMsg = data as ErrorMessage
+    else
+      [trackList, errorMsg] = [data, null]
   } catch (error: unknown) {
     if (error instanceof Error)
-      errorMsg = error.message
+      errorMsg = { status: 0, endpoint: "", message: error.message }
     else
-      errorMsg = "Неизвестная ошибка"
+      errorMsg = { status: 0, endpoint: "", message: "Неизвестная ошибка" }
   }
 
   return (

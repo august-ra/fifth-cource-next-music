@@ -1,3 +1,6 @@
+import styles from "../Filter.module.css"
+import classNames from "classnames"
+
 
 interface Props {
   filterOptions: string[]
@@ -5,12 +8,14 @@ interface Props {
 
 export default function FilterList({ filterOptions }: Props) {
   return (
-    <ul className="centerblock__filter filter">
-      {
-        filterOptions.map((filter) => (
-          <li key={filter} className="filter__title">{filter}</li>
-        ))
-      }
-    </ul>
+    <div className={styles.filterListContainer}>
+      <ul className={classNames(styles.filterList, { [styles.filterListLong]: filterOptions.length > 5 })}>
+        {
+          filterOptions.map((filter) => (
+            <li key={filter} className={styles.filterLine}>{filter}</li>
+          ))
+        }
+      </ul>
+    </div>
   )
 }

@@ -2,19 +2,20 @@ import styles from "./Playlist.module.css"
 import classNames from "classnames"
 
 import Track from "@components/Track/Track"
+import ErrorBlock from "@components/ErrorBlock/ErrorBlock"
 
-import { TrackType } from "@/types"
+import { ErrorMessage, TrackType } from "@/types"
 
 
 interface Props {
   trackList: TrackType[]
-  errorMsg:  string
+  errorMsg:  ErrorMessage | null
 }
 
 export default function Playlist({ trackList, errorMsg }: Props) {
   if (errorMsg)
     return (
-      <div className="playlist__item">{errorMsg}</div>
+      <ErrorBlock errorMsg={errorMsg} />
     )
 
   return (
@@ -32,7 +33,7 @@ export default function Playlist({ trackList, errorMsg }: Props) {
       <div className={styles.playlistContent}>
         {
           trackList?.map((track: TrackType) => {
-            return <Track {...track}/>
+            return <Track key={track._id} {...track}/>
           })
         }
       </div>

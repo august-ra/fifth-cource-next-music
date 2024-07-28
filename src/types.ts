@@ -26,6 +26,16 @@ export interface TrackType {
   staredUser:          UserType[]
 }
 
+export interface ErrorMessage {
+  status:   number
+  message:  string
+  endpoint: string
+}
+
+export function isError(pet: ErrorMessage | any): pet is ErrorMessage {
+  return (<ErrorMessage>pet).message !== undefined;
+}
+
 /* enums */
 
 export enum FilterKind {

@@ -6,12 +6,12 @@ import Playlist from "@components/Playlist/Playlist"
 import Searchbar from "@components/Searchbar/Searchbar"
 import Sidebar from "@components/Sidebar/Sidebar"
 
-import { TrackType } from "@/types"
+import { ErrorMessage, TrackType } from "@/types"
 
 
 interface Props {
   trackList: TrackType[]
-  errorMsg: string
+  errorMsg:  ErrorMessage | null
 }
 
 export default function Main({ trackList, errorMsg }: Props) {

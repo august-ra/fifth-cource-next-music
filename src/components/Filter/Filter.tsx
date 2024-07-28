@@ -25,10 +25,13 @@ export default function Filter({ trackList }: Props) {
     switch (filter) {
       case FilterKind.artist:
         return Array.from(new Set<string>(trackList.map((track) => track.author)))
+          .filter((line) => line !== "-")
+          .sort()
       case FilterKind.genre:
         return Array.from(new Set<string>(trackList.map((track) => track.genre).flat()))
+          .sort()
       case FilterKind.year:
-        return ["Сначала новые", "Сначала старые", "По умолчанию"]
+        return ["По умолчанию", "Сначала новые", "Сначала старые"]
       default:
         return []
     }
@@ -47,6 +50,9 @@ export default function Filter({ trackList }: Props) {
       {
         filterKind.map((filter, index) => {
           const list = getUniqueLists(filter)
+
+          if (openedFilter && !list.length)
+            setOpenedFilter(null)
 
           return (
             <FilterButton key={index} title={filter} opened={openedFilter === filter} openFilter={handleOpenedFilter} filterList={list} />
