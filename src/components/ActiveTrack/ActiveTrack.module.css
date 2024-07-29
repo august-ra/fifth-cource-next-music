@@ -3,6 +3,11 @@
   display: flex;
 }
 
+.emptyTrack {
+  align-items: center;
+  cursor: default;
+}
+
 .trackContainer {
   width: auto;
   display: grid;
@@ -60,6 +65,7 @@
   font-size: 13px;
   line-height: 24px;
   color: #ffffff;
+  white-space: nowrap;
 }
 
 .trackLikeContainer {

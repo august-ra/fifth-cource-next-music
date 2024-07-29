@@ -33,7 +33,7 @@ export default function Playlist({ trackList, errorMsg }: Props) {
       <div className={styles.playlistContent}>
         {
           trackList?.map((track: TrackType) => {
-            return <Track key={track._id} {...track}/>
+            return <Track key={track._id} track={track}/>
           })
         }
       </div>

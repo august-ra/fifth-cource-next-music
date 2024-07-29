@@ -1,6 +1,8 @@
 import Bar from "@components/Bar/Bar"
 import Main from "@components/Main/Main"
 
+import CurrentTrackProvider from "@contexts/CurrentTrackProvider"
+
 import { API } from "@/api/tracks"
 import { ErrorMessage, isError, TrackType } from "@/types"
 
@@ -26,8 +28,11 @@ export default async function Home() {
   return (
     <div className="wrapper">
       <div className="container">
-        <Main trackList={trackList} errorMsg={errorMsg} />
-        <Bar />
+        <CurrentTrackProvider>
+          <Main trackList={trackList} errorMsg={errorMsg} />
+          <Bar />
+        </CurrentTrackProvider>
+
         <footer className="footer" />
       </div>
     </div>

@@ -4,8 +4,14 @@ import classNames from "classnames"
 
 import ActiveTrack from "@components/ActiveTrack/ActiveTrack"
 
+import { TrackType } from "@/types"
 
-export default function Player() {
+
+interface Props {
+  currentTrack: TrackType
+}
+
+export default function Player({ currentTrack }: Props) {
   return (
     <div className={styles.player}>
       <div className={styles.playerControls}>
@@ -36,7 +42,7 @@ export default function Player() {
         </div>
       </div>
 
-      <ActiveTrack />
+      <ActiveTrack currentTrack={currentTrack} />
     </div>
   )
 }
