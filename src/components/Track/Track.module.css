@@ -80,15 +80,24 @@
   color: #696969;
 }
 
-.trackTime svg {
-  width: 14px;
-  height: 12px;
-  margin-right: 17px;
-  fill: transparent;
-  stroke: #696969;
+.trackTime {
+  display: flex;
+  gap: 17px;
+
+  & div,
+  & svg {
+    width: 14px;
+    height: 12px;
+  }
+
+  & svg {
+    fill: transparent;
+    stroke: #696969;
+  }
 }
 
 .trackTimeText {
+  width: 32px;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;

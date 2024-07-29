@@ -49,5 +49,6 @@
 .playlistContent {
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
+  overflow: auto;
+  height: calc(100vh - 460px);
 }

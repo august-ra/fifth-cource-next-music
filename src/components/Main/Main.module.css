@@ -7,7 +7,7 @@
 }
 
 .main {
-  width: auto;
+  width: 750px;
   flex-grow: 3;
   padding: 20px 40px 20px 111px;
 }
