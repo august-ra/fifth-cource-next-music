@@ -1,8 +1,10 @@
+import { ErrorMessage, TrackType } from "@/types"
+
 
 export const API = {
   uri: "https://webdev-music-003b5b991590.herokuapp.com",
 
-  async getTracks(): Promise<any> {
+  async getTracks(): Promise<TrackType[] | ErrorMessage> {
     let status = 0
     const endpoint = `${this.uri}/catalog/track/all/`
 
@@ -14,12 +16,12 @@ export const API = {
       const data = await response.json()
 
       if (!response.ok)
-        return { status, message: data.message }
+        return { status, endpoint, message: data.message }
 
       return data.data
     } catch (error: unknown) {
       if (status >= 400)
-        return { status, endpoint, message: null }
+        return { status, endpoint, message: "" }
       else if (error instanceof Error)
         return  { status, endpoint, message: error.message }
       else
