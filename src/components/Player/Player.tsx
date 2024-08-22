@@ -1,6 +1,6 @@
 import styles from "./Player.module.css"
 import shared from "@/components/SharedButtons/SharedButtons.module.css"
-import classNames from "classnames"
+import cn from "classnames"
 
 import ActiveTrack from "@components/ActiveTrack/ActiveTrack"
 
@@ -30,12 +30,12 @@ export default function Player({ currentTrack }: Props) {
             <use xlinkHref="/img/icon/sprite.svg#icon-next" />
           </svg>
         </div>
-        <div className={classNames(styles.playerBtnRepeat, shared.btnIcon)}>
+        <div className={cn(styles.playerBtnRepeat, shared.btnIcon)}>
           <svg>
             <use xlinkHref="/img/icon/sprite.svg#icon-repeat" />
           </svg>
         </div>
-        <div className={classNames(styles.playerBtnShuffle, shared.btnIcon)}>
+        <div className={cn(styles.playerBtnShuffle, shared.btnIcon)}>
           <svg>
             <use xlinkHref="/img/icon/sprite.svg#icon-shuffle" />
           </svg>

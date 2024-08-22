@@ -1,6 +1,6 @@
 import styles from "./Volume.module.css"
 import shared from "@/components/SharedButtons/SharedButtons.module.css"
-import classNames from "classnames"
+import cn from "classnames"
 
 
 export default function Volume() {
@@ -12,8 +12,8 @@ export default function Volume() {
             <use xlinkHref="/img/icon/sprite.svg#icon-volume" />
           </svg>
         </div>
-        <div className={classNames(styles.volumeProgress, shared.btn)}>
-          <input className={classNames(styles.volumeProgressLine, shared.btn)} type="range" name="range" />
+        <div className={cn(styles.volumeProgress, shared.btn)}>
+          <input className={cn(styles.volumeProgressLine, shared.btn)} type="range" name="range" />
         </div>
       </div>
     </div>
