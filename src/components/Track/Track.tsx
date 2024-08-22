@@ -3,8 +3,9 @@
 import styles from "./Track.module.css"
 import shared from "@/components/SharedButtons/SharedButtons.module.css"
 
-import { TrackType } from "@/types"
 import { useCurrentTrack } from "@contexts/CurrentTrackProvider"
+import { TrackType } from "@/types"
+import { printTime } from "@/utils/datetime"
 
 
 interface Props {
@@ -45,7 +46,7 @@ export default function Track({ track }: Props) {
               <use xlinkHref="/img/icon/sprite.svg#icon-like" />
             </svg>
           </div>
-          <span className={styles.trackTimeText}>{track.duration_in_seconds}</span>
+          <span className={styles.trackTimeText}>{printTime(track.duration_in_seconds)}</span>
         </div>
       </div>
     </div>
