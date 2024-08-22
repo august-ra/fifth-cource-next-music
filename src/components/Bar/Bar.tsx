@@ -73,7 +73,7 @@ export default function Bar() {
             </span>
         }
 
-        <audio src={currentTrack?.track_file} ref={audioRef} onTimeUpdate={handleTimeUpdate} />
+        <audio className={styles.barAudio} src={currentTrack?.track_file} ref={audioRef} onTimeUpdate={handleTimeUpdate} />
 
         <ProgressBar max={currentAudio?.duration || 0} position={position} handleSeek={handleSeek} />
 
