@@ -9,9 +9,13 @@ import { TrackType } from "@/types"
 
 interface Props {
   currentTrack: TrackType
+  isPaused:     boolean
+  togglePlay:   () => void
 }
 
-export default function Player({ currentTrack }: Props) {
+export default function Player({ currentTrack, isPaused, togglePlay }: Props) {
+  const state = isPaused ? "play" : "pause"
+
   return (
     <div className={styles.player}>
       <div className={styles.playerControls}>
@@ -20,9 +24,9 @@ export default function Player({ currentTrack }: Props) {
             <use xlinkHref="/img/icon/sprite.svg#icon-prev" />
           </svg>
         </div>
-        <div className={styles.playerBtnPlay}>
+        <div className={styles.playerBtnPlay} onClick={togglePlay}>
           <svg>
-            <use xlinkHref="/img/icon/sprite.svg#icon-play" />
+            <use xlinkHref={`/img/icon/sprite.svg#icon-${state}`} />
           </svg>
         </div>
         <div className={styles.playerBtnNext}>
