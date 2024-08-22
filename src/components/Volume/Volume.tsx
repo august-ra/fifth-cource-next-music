@@ -15,11 +15,9 @@ export default function Volume({ audioRef }: Props) {
   const [volume, setVolume] = useState<number>(0.5)
 
   useEffect(() => {
-    if (!audioRef.current)
-      return
-
-    audioRef.current.volume = volume
-  }, [volume])
+    if (audioRef.current)
+      audioRef.current.volume = volume
+  }, [volume, audioRef])
 
   function handleChangeVolume(event: ChangeEvent<HTMLInputElement>) {
     setVolume(Number(event.target.value))

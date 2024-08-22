@@ -12,6 +12,7 @@ import { useCurrentTrack } from "@contexts/CurrentTrackProvider"
 
 export default function Bar() {
   const [isPaused, setIsPaused] = useState<boolean>(true)
+  const [isLooped, setIsLooped] = useState<boolean>(false)
   const [position, setPosition] = useState<number>(0)
   const { currentTrack, getEmptyTrack } = useCurrentTrack()
   const audioRef = useRef<HTMLAudioElement>(null)
@@ -29,6 +30,13 @@ export default function Bar() {
     currentAudio.play()
   }, [currentTrack])
 
+  useEffect(() => {
+    if (currentAudio) {
+      console.log(isLooped)
+      audioRef.current.loop = isLooped
+    }
+  }, [isLooped])
+
   function togglePlay() {
     if (!currentAudio)
       return
@@ -39,6 +47,10 @@ export default function Bar() {
       currentAudio.pause()
 
     setIsPaused(currentAudio.paused)
+  }
+
+  function toggleLoop() {
+    setIsLooped((prev) => !prev)
   }
 
   function handleTimeUpdate(event: ChangeEvent<HTMLAudioElement>) {
@@ -58,7 +70,7 @@ export default function Bar() {
         <ProgressBar max={currentAudio?.duration || 0} position={position} handleSeek={handleSeek} />
 
         <div className={styles.barPlayer}>
-          <Player currentTrack={currentTrack ?? getEmptyTrack()} isPaused={isPaused} togglePlay={togglePlay} />
+          <Player currentTrack={currentTrack ?? getEmptyTrack()} isPaused={isPaused} isLooped={isLooped} togglePlay={togglePlay} toggleLoop={toggleLoop} />
 
           <Volume audioRef={audioRef} />
         </div>

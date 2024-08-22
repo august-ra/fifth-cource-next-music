@@ -10,10 +10,12 @@ import { TrackType } from "@/types"
 interface Props {
   currentTrack: TrackType
   isPaused:     boolean
+  isLooped:     boolean
   togglePlay:   () => void
+  toggleLoop:   () => void
 }
 
-export default function Player({ currentTrack, isPaused, togglePlay }: Props) {
+export default function Player({ currentTrack, isPaused, isLooped, togglePlay, toggleLoop }: Props) {
   const state = isPaused ? "play" : "pause"
 
   return (
@@ -34,7 +36,7 @@ export default function Player({ currentTrack, isPaused, togglePlay }: Props) {
             <use xlinkHref="/img/icon/sprite.svg#icon-next" />
           </svg>
         </div>
-        <div className={cn(styles.playerBtnRepeat, shared.btnIcon)}>
+        <div className={cn(styles.playerBtnRepeat, shared.btnIcon, { [shared.active]: isLooped })} onClick={toggleLoop}>
           <svg>
             <use xlinkHref="/img/icon/sprite.svg#icon-repeat" />
           </svg>
