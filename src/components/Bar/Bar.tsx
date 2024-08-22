@@ -8,6 +8,7 @@ import Volume from "@components/Volume/Volume"
 
 import { ChangeEvent, useEffect, useRef, useState } from "react"
 import { useCurrentTrack } from "@contexts/CurrentTrackProvider"
+import { printTime } from "@/utils/datetime"
 
 
 export default function Bar() {
@@ -64,9 +65,16 @@ export default function Bar() {
 
   return (
     <div className={styles.bar}>
-      <audio src={currentTrack?.track_file} ref={audioRef} onTimeUpdate={handleTimeUpdate} />
-
       <div className={styles.barContent}>
+        {
+          currentAudio && !isNaN(currentAudio.duration)
+            && <span className={styles.barTimers}>
+              {printTime(currentAudio.currentTime)} / {printTime(currentAudio.duration )}
+            </span>
+        }
+
+        <audio src={currentTrack?.track_file} ref={audioRef} onTimeUpdate={handleTimeUpdate} />
+
         <ProgressBar max={currentAudio?.duration || 0} position={position} handleSeek={handleSeek} />
 
         <div className={styles.barPlayer}>
