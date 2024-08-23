@@ -1,10 +1,11 @@
 "use client"
 
-import { useState } from "react"
+import styles from "./Nav.module.css"
+
 import Image from "next/image"
 import Link from "next/link"
 
-import styles from "./Nav.module.css"
+import { useState } from "react"
 
 
 export default function Nav() {

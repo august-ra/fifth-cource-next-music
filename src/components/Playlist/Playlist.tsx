@@ -1,5 +1,5 @@
 import styles from "./Playlist.module.css"
-import classNames from "classnames"
+import cn from "classnames"
 
 import Track from "@components/Track/Track"
 import ErrorBlock from "@components/ErrorBlock/ErrorBlock"
@@ -21,10 +21,10 @@ export default function Playlist({ trackList, errorMsg }: Props) {
   return (
     <div className={styles.playlistWrapper}>
       <div className={styles.playlistTitle}>
-        <div className={classNames(styles.playlistCol, styles.col01)}>Трек</div>
-        <div className={classNames(styles.playlistCol, styles.col02)}>Исполнитель</div>
-        <div className={classNames(styles.playlistCol, styles.col03)}>Альбом</div>
-        <div className={classNames(styles.playlistCol, styles.col04)}>
+        <div className={cn(styles.playlistCol, styles.col01)}>Трек</div>
+        <div className={cn(styles.playlistCol, styles.col02)}>Исполнитель</div>
+        <div className={cn(styles.playlistCol, styles.col03)}>Альбом</div>
+        <div className={cn(styles.playlistCol, styles.col04)}>
           <svg>
             <use xlinkHref="/img/icon/sprite.svg#icon-watch" />
           </svg>
@@ -32,9 +32,9 @@ export default function Playlist({ trackList, errorMsg }: Props) {
       </div>
       <div className={styles.playlistContent}>
         {
-          trackList?.map((track: TrackType) => {
-            return <Track key={track._id} {...track}/>
-          })
+          trackList?.map((track: TrackType) => (
+            <Track key={track._id} track={track} />
+          ))
         }
       </div>
     </div>

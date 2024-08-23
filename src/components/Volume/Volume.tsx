@@ -1,9 +1,28 @@
+"use client"
+
 import styles from "./Volume.module.css"
 import shared from "@/components/SharedButtons/SharedButtons.module.css"
-import classNames from "classnames"
+import cn from "classnames"
+
+import { ChangeEvent, RefObject, useEffect, useState } from "react"
 
 
-export default function Volume() {
+interface Props {
+  audioRef: RefObject<HTMLAudioElement>
+}
+
+export default function Volume({ audioRef }: Props) {
+  const [volume, setVolume] = useState<number>(0.5)
+
+  useEffect(() => {
+    if (audioRef.current)
+      audioRef.current.volume = volume
+  }, [volume, audioRef])
+
+  function handleChangeVolume(event: ChangeEvent<HTMLInputElement>) {
+    setVolume(Number(event.target.value))
+  }
+
   return (
     <div className={styles.volume}>
       <div className={styles.volumeContent}>
@@ -12,8 +31,8 @@ export default function Volume() {
             <use xlinkHref="/img/icon/sprite.svg#icon-volume" />
           </svg>
         </div>
-        <div className={classNames(styles.volumeProgress, shared.btn)}>
-          <input className={classNames(styles.volumeProgressLine, shared.btn)} type="range" name="range" />
+        <div className={cn(styles.volumeProgress, shared.btn)}>
+          <input className={cn(styles.volumeProgressLine, shared.btn)} type="range" min={0} max={1} step={0.01} value={volume} onChange={handleChangeVolume} />
         </div>
       </div>
     </div>

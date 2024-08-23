@@ -1,11 +1,23 @@
 import styles from "./Player.module.css"
 import shared from "@/components/SharedButtons/SharedButtons.module.css"
-import classNames from "classnames"
+import cn from "classnames"
 
 import ActiveTrack from "@components/ActiveTrack/ActiveTrack"
 
+import { TrackType } from "@/types"
 
-export default function Player() {
+
+interface Props {
+  currentTrack: TrackType
+  isPaused:     boolean
+  isLooped:     boolean
+  togglePlay:   () => void
+  toggleLoop:   () => void
+}
+
+export default function Player({ currentTrack, isPaused, isLooped, togglePlay, toggleLoop }: Props) {
+  const state = isPaused ? "play" : "pause"
+
   return (
     <div className={styles.player}>
       <div className={styles.playerControls}>
@@ -14,9 +26,9 @@ export default function Player() {
             <use xlinkHref="/img/icon/sprite.svg#icon-prev" />
           </svg>
         </div>
-        <div className={styles.playerBtnPlay}>
+        <div className={styles.playerBtnPlay} onClick={togglePlay}>
           <svg>
-            <use xlinkHref="/img/icon/sprite.svg#icon-play" />
+            <use xlinkHref={`/img/icon/sprite.svg#icon-${state}`} />
           </svg>
         </div>
         <div className={styles.playerBtnNext}>
@@ -24,19 +36,19 @@ export default function Player() {
             <use xlinkHref="/img/icon/sprite.svg#icon-next" />
           </svg>
         </div>
-        <div className={classNames(styles.playerBtnRepeat, shared.btnIcon)}>
+        <div className={cn(styles.playerBtnRepeat, shared.btnIcon, { [shared.active]: isLooped })} onClick={toggleLoop}>
           <svg>
             <use xlinkHref="/img/icon/sprite.svg#icon-repeat" />
           </svg>
         </div>
-        <div className={classNames(styles.playerBtnShuffle, shared.btnIcon)}>
+        <div className={cn(styles.playerBtnShuffle, shared.btnIcon)}>
           <svg>
             <use xlinkHref="/img/icon/sprite.svg#icon-shuffle" />
           </svg>
         </div>
       </div>
 
-      <ActiveTrack />
+      <ActiveTrack currentTrack={currentTrack} />
     </div>
   )
 }

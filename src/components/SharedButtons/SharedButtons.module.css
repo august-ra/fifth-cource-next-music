@@ -34,4 +34,9 @@
     fill: #696969;
     stroke: #ffffff;
   }
+
+  &.active svg {
+    fill: #fff;
+    stroke: #fff;
+  }
 }
