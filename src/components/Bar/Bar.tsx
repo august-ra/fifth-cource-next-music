@@ -7,7 +7,8 @@ import ProgressBar from "@components/Bar/ProgressBar/ProgressBar"
 import Volume from "@components/Volume/Volume"
 
 import { ChangeEvent, useEffect, useRef, useState } from "react"
-import { useCurrentTrack } from "@contexts/CurrentTrackProvider"
+import { useAppSelector } from "@/store/store"
+import { getEmptyTrack } from "@/store/features/playlistSlice"
 import { printTime } from "@/utils/datetime"
 
 
@@ -15,7 +16,7 @@ export default function Bar() {
   const [isPaused, setIsPaused] = useState<boolean>(true)
   const [isLooped, setIsLooped] = useState<boolean>(false)
   const [position, setPosition] = useState<number>(0)
-  const { currentTrack, getEmptyTrack } = useCurrentTrack()
+  const currentTrack = useAppSelector((state) => state.playlist.currentTrack)
   const audioRef = useRef<HTMLAudioElement>(null)
 
   const currentAudio = audioRef?.current

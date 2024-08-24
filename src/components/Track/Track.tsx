@@ -3,7 +3,8 @@
 import styles from "./Track.module.css"
 import shared from "@/components/SharedButtons/SharedButtons.module.css"
 
-import { useCurrentTrack } from "@contexts/CurrentTrackProvider"
+import { useAppDispatch } from "@/store/store"
+import { setCurrentTrack } from "@/store/features/playlistSlice"
 import { TrackType } from "@/types"
 import { printTime } from "@/utils/datetime"
 
@@ -13,10 +14,10 @@ interface Props {
 }
 
 export default function Track({ track }: Props) {
-  const { setCurrentTrack } = useCurrentTrack()
+  const dispatch = useAppDispatch()
 
   function handleTrackClick() {
-    setCurrentTrack(track)
+    dispatch(setCurrentTrack(track))
   }
 
   return (
