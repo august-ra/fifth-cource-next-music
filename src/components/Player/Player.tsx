@@ -4,18 +4,19 @@ import cn from "classnames"
 
 import ActiveTrack from "@components/ActiveTrack/ActiveTrack"
 
+import { useAppSelector } from "@/store/store"
 import { TrackType } from "@/types"
 
 
 interface Props {
   currentTrack: TrackType
-  isPaused:     boolean
   isLooped:     boolean
   togglePlay:   () => void
   toggleLoop:   () => void
 }
 
-export default function Player({ currentTrack, isPaused, isLooped, togglePlay, toggleLoop }: Props) {
+export default function Player({ currentTrack, isLooped, togglePlay, toggleLoop }: Props) {
+  const isPaused = useAppSelector((state) => state.playlist.isPaused)
   const state = isPaused ? "play" : "pause"
 
   return (

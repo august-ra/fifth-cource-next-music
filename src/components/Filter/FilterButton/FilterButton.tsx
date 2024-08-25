@@ -20,7 +20,9 @@ export default function FilterButton({ title, opened, filterList, openFilter }: 
       </div>
       {
         opened
-          && <FilterList filterOptions={filterList} />
+          && (
+            <FilterList filterOptions={filterList} />
+          )
       }
     </div>
   )

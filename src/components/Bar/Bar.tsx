@@ -7,13 +7,14 @@ import ProgressBar from "@components/Bar/ProgressBar/ProgressBar"
 import Volume from "@components/Volume/Volume"
 
 import { ChangeEvent, useEffect, useRef, useState } from "react"
-import { useAppSelector } from "@/store/store"
+import { useAppDispatch, useAppSelector } from "@/store/store"
+import { setIsPaused } from "@/store/features/playlistSlice"
 import { getEmptyTrack } from "@/store/features/playlistSlice"
 import { printTime } from "@/utils/datetime"
 
 
 export default function Bar() {
-  const [isPaused, setIsPaused] = useState<boolean>(true)
+  const dispatch = useAppDispatch()
   const [isLooped, setIsLooped] = useState<boolean>(false)
   const [position, setPosition] = useState<number>(0)
   const currentTrack = useAppSelector((state) => state.playlist.currentTrack)
@@ -25,7 +26,7 @@ export default function Bar() {
     if (!currentAudio)
       return
 
-    setIsPaused(false)
+    dispatch(setIsPaused(false))
     setPosition(0)
 
     audioRef.current.currentTime = 0
@@ -48,7 +49,7 @@ export default function Bar() {
     else
       currentAudio.pause()
 
-    setIsPaused(currentAudio.paused)
+    dispatch(setIsPaused(currentAudio.paused))
   }
 
   function toggleLoop() {
@@ -69,9 +70,11 @@ export default function Bar() {
       <div className={styles.barContent}>
         {
           currentAudio && !isNaN(currentAudio.duration)
-            && <span className={styles.barTimers}>
-              {printTime(currentAudio.currentTime)} / {printTime(currentAudio.duration )}
-            </span>
+            && (
+              <span className={styles.barTimers}>
+                {printTime(currentAudio.currentTime)} / {printTime(currentAudio.duration )}
+              </span>
+            )
         }
 
         <audio className={styles.barAudio} src={currentTrack?.track_file} ref={audioRef} onTimeUpdate={handleTimeUpdate} />
@@ -79,7 +82,7 @@ export default function Bar() {
         <ProgressBar max={currentAudio?.duration || 0} position={position} handleSeek={handleSeek} />
 
         <div className={styles.barPlayer}>
-          <Player currentTrack={currentTrack ?? getEmptyTrack()} isPaused={isPaused} isLooped={isLooped} togglePlay={togglePlay} toggleLoop={toggleLoop} />
+          <Player currentTrack={currentTrack ?? getEmptyTrack()} isLooped={isLooped} togglePlay={togglePlay} toggleLoop={toggleLoop} />
 
           <Volume audioRef={audioRef} />
         </div>
