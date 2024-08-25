@@ -33,7 +33,7 @@ export default function Playlist({ playlist, errorMsg }: Props) {
       <div className={styles.playlistContent}>
         {
           playlist?.map((track: TrackType) => (
-            <Track key={track._id} track={track} />
+            <Track key={track._id} playlist={playlist} track={track} />
           ))
         }
       </div>

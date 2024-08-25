@@ -4,13 +4,20 @@ import {TrackType} from "@/types"
 
 
 interface PlaylistState {
-  currentTrack: TrackType | null
-  isPaused:     boolean
+  activePlaylist: TrackType[]
+  currentTrack:   TrackType | null
+  isPaused:       boolean
+}
+
+interface PlaylistInfo {
+  playlist: TrackType[]
+  track:    TrackType
 }
 
 const initialState: PlaylistState = {
-  currentTrack: null,
-  isPaused:     false,
+  activePlaylist: [],
+  currentTrack:   null,
+  isPaused:       false,
 }
 
 export function getEmptyTrack(): TrackType {
@@ -35,6 +42,10 @@ export const playlistSlice = createSlice({
   name: "playlist",
   initialState,
   reducers: {
+    setActivePlaylistAndTrackInside(state, action: PayloadAction<PlaylistInfo>) {
+      state.activePlaylist = action.payload.playlist
+      state.currentTrack   = action.payload.track
+    },
     setCurrentTrack(state, action: PayloadAction<TrackType>) {
       state.currentTrack = action.payload
     },
@@ -44,5 +55,5 @@ export const playlistSlice = createSlice({
   },
 })
 
-export const { setCurrentTrack, setIsPaused } = playlistSlice.actions
+export const { setActivePlaylistAndTrackInside, setCurrentTrack, setIsPaused } = playlistSlice.actions
 export const playlistReducer = playlistSlice.reducer

@@ -4,20 +4,21 @@ import styles from "./Track.module.css"
 import shared from "@/components/SharedButtons/SharedButtons.module.css"
 
 import { useAppDispatch } from "@/store/store"
-import { setCurrentTrack } from "@/store/features/playlistSlice"
+import { setActivePlaylistAndTrackInside } from "@/store/features/playlistSlice"
 import { TrackType } from "@/types"
 import { printTime } from "@/utils/datetime"
 
 
 interface Props {
+  playlist: TrackType[]
   track: TrackType
 }
 
-export default function Track({ track }: Props) {
+export default function Track({ playlist, track }: Props) {
   const dispatch = useAppDispatch()
 
   function handleTrackClick() {
-    dispatch(setCurrentTrack(track))
+    dispatch(setActivePlaylistAndTrackInside({ playlist, track }))
   }
 
   return (
