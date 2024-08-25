@@ -10,11 +10,11 @@ import { ErrorMessage, TrackType } from "@/types"
 
 
 interface Props {
-  trackList: TrackType[]
-  errorMsg:  ErrorMessage | null
+  playlist: TrackType[]
+  errorMsg: ErrorMessage | null
 }
 
-export default function Main({ trackList, errorMsg }: Props) {
+export default function Main({ playlist, errorMsg }: Props) {
   return (
     <main className={styles.mainContainer}>
       <Nav />
@@ -23,8 +23,8 @@ export default function Main({ trackList, errorMsg }: Props) {
         <Searchbar />
 
         <h2 className={styles.mainTitle}>Треки</h2>
-        <Filter trackList={trackList} />
-        <Playlist trackList={trackList} errorMsg={errorMsg} />
+        <Filter playlist={playlist} />
+        <Playlist playlist={playlist} errorMsg={errorMsg} />
       </div>
 
       <Sidebar />
