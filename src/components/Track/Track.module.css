@@ -37,6 +37,31 @@
   }
 }
 
+.trackMark {
+  width: 19px;
+  height: 19px;
+  position: absolute;
+  translate: 17px 1px;
+  border-radius: 50%;
+  background: #b672ff;
+
+  &.animated {
+    animation: pulsation 1.5s ease-in-out infinite both;
+  }
+}
+
+@keyframes pulsation {
+  0% {
+    scale: 1.0;
+  }
+  50% {
+    scale: 0.7;
+  }
+  100% {
+    scale: 1.0;
+  }
+}
+
 .trackTitleLink {
   font-style: normal;
   font-weight: 400;
