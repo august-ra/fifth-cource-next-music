@@ -4,9 +4,11 @@ import { TrackType } from "@/types"
 
 
 interface PlaylistState {
-  activePlaylist: TrackType[]
-  currentTrack:   TrackType | null
-  isPaused:       boolean
+  activePlaylist:   TrackType[]
+  shuffledPlaylist: TrackType[]
+  currentTrack:     TrackType | null
+  isPaused:         boolean
+  isShuffled:       boolean
 }
 
 interface PlaylistInfo {
@@ -15,9 +17,11 @@ interface PlaylistInfo {
 }
 
 const initialState: PlaylistState = {
-  activePlaylist: [],
-  currentTrack:   null,
-  isPaused:       false,
+  activePlaylist:   [],
+  shuffledPlaylist: [],
+  currentTrack:     null,
+  isPaused:         true,
+  isShuffled:       false,
 }
 
 export function getEmptyTrack(): TrackType {
@@ -45,6 +49,11 @@ export const playlistSlice = createSlice({
     setActivePlaylistAndTrackInside(state, action: PayloadAction<PlaylistInfo>) {
       state.activePlaylist = action.payload.playlist
       state.currentTrack   = action.payload.track
+
+      if (state.isShuffled)
+        state.shuffledPlaylist = state.activePlaylist.toSorted(() => 0.5 - Math.random())
+      else
+        state.shuffledPlaylist = state.activePlaylist
     },
     setCurrentTrack(state, action: PayloadAction<TrackType>) {
       state.currentTrack = action.payload
@@ -52,8 +61,18 @@ export const playlistSlice = createSlice({
     setIsPaused(state, action: PayloadAction<boolean>) {
       state.isPaused = action.payload
     },
+    toggleIsShuffled(state) {
+      console.log("toggleIsShuffled", state.isShuffled)
+
+      state.isShuffled = !state.isShuffled
+
+      if (state.isShuffled)
+        state.shuffledPlaylist = state.activePlaylist.toSorted(() => 0.5 - Math.random())
+      else
+        state.shuffledPlaylist = state.activePlaylist
+    },
   },
 })
 
-export const { setActivePlaylistAndTrackInside, setCurrentTrack, setIsPaused } = playlistSlice.actions
+export const { setActivePlaylistAndTrackInside, setCurrentTrack, setIsPaused, toggleIsShuffled } = playlistSlice.actions
 export const playlistReducer = playlistSlice.reducer

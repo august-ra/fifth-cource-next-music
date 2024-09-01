@@ -9,14 +9,15 @@ import { TrackType } from "@/types"
 
 
 interface Props {
-  currentTrack: TrackType
-  isLooped:     boolean
-  togglePlay:   () => void
-  toggleLoop:   () => void
+  currentTrack:  TrackType
+  isLooped:      boolean
+  togglePlay:    () => void
+  toggleLoop:    () => void
+  toggleShuffle: () => void
 }
 
-export default function Player({ currentTrack, isLooped, togglePlay, toggleLoop }: Props) {
-  const isPaused = useAppSelector((state) => state.playlist.isPaused)
+export default function Player({ currentTrack, isLooped, togglePlay, toggleLoop, toggleShuffle }: Props) {
+  const { isPaused, isShuffled } = useAppSelector((state) => state.playlist)
   const state = isPaused ? "play" : "pause"
 
   return (
@@ -42,7 +43,7 @@ export default function Player({ currentTrack, isLooped, togglePlay, toggleLoop 
             <use xlinkHref="/img/icon/sprite.svg#icon-repeat" />
           </svg>
         </div>
-        <div className={cn(styles.playerBtnShuffle, shared.btnIcon)}>
+        <div className={cn(styles.playerBtnShuffle, shared.btnIcon, { [shared.active]: isShuffled })} onClick={toggleShuffle}>
           <svg>
             <use xlinkHref="/img/icon/sprite.svg#icon-shuffle" />
           </svg>

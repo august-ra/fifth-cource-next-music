@@ -8,7 +8,7 @@ import Volume from "@components/Volume/Volume"
 
 import { ChangeEvent, useEffect, useRef, useState } from "react"
 import { useAppDispatch, useAppSelector } from "@/store/store"
-import { setIsPaused } from "@/store/features/playlistSlice"
+import { setIsPaused, toggleIsShuffled } from "@/store/features/playlistSlice"
 import { getEmptyTrack } from "@/store/features/playlistSlice"
 import { printTime } from "@/utils/datetime"
 
@@ -56,6 +56,10 @@ export default function Bar() {
     setIsLooped((prev) => !prev)
   }
 
+  function toggleShufled() {
+    dispatch(toggleIsShuffled())
+  }
+
   function handleTimeUpdate(event: ChangeEvent<HTMLAudioElement>) {
     setPosition(event.currentTarget.currentTime)
   }
@@ -73,7 +77,8 @@ export default function Bar() {
         <ProgressBar max={currentAudio?.duration || 0} position={position} handleSeek={handleSeek} />
 
         <div className={styles.barPlayer}>
-          <Player currentTrack={currentTrack ?? getEmptyTrack()} isLooped={isLooped} togglePlay={togglePlay} toggleLoop={toggleLoop} />
+          <Player currentTrack={currentTrack ?? getEmptyTrack()} isLooped={isLooped}
+                  togglePlay={togglePlay} toggleLoop={toggleLoop} toggleShuffle={toggleShufled} />
 
           <Volume audioRef={audioRef} />
 
