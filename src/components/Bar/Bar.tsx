@@ -23,6 +23,17 @@ export default function Bar() {
   const currentAudio = audioRef?.current
 
   useEffect(() => {
+    if (!audioRef || !audioRef?.current || isLooped)
+      return
+
+    const currentAudio = audioRef.current
+
+    currentAudio.addEventListener("ended", goNextTrack)
+
+    return () => currentAudio.removeEventListener("ended", goNextTrack)
+  }, [])
+
+  useEffect(() => {
     if (!currentAudio)
       return
 
@@ -67,6 +78,10 @@ export default function Bar() {
   function handleSeek(event: ChangeEvent<HTMLInputElement>) {
     if (currentAudio)
       currentAudio.currentTime = Number(event.target.value)
+  }
+
+  function goNextTrack() {
+    dispatch(selectNextTrack(true))
   }
 
   function handleNextTrack() {
