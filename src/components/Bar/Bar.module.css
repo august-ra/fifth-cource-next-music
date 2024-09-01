@@ -13,9 +13,9 @@
 }
 
 .barTimers {
+  width: 100px;
   text-align: right;
   padding-right: 10px;
-  padding-bottom: 10px;
 }
 
 .barAudio {

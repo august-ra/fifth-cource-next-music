@@ -26,14 +26,10 @@ export default function Volume({ audioRef }: Props) {
   return (
     <div className={styles.volume}>
       <div className={styles.volumeContent}>
-        <div className={styles.volumeImage}>
-          <svg>
-            <use xlinkHref="/img/icon/sprite.svg#icon-volume" />
-          </svg>
-        </div>
-        <div className={cn(styles.volumeProgress, shared.btn)}>
-          <input className={cn(styles.volumeProgressLine, shared.btn)} type="range" min={0} max={1} step={0.01} value={volume} onChange={handleChangeVolume} />
-        </div>
+        <svg className={styles.volumeImage}>
+          <use xlinkHref="/img/icon/sprite.svg#icon-volume" />
+        </svg>
+        <input className={cn(styles.volumeProgress, shared.btn)} type="range" min={0} max={1} step={0.01} value={volume} onChange={handleChangeVolume} />
       </div>
     </div>
   )

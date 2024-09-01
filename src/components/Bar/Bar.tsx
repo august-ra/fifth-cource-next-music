@@ -68,15 +68,6 @@ export default function Bar() {
   return (
     <div className={styles.bar}>
       <div className={styles.barContent}>
-        {
-          currentAudio && !isNaN(currentAudio.duration)
-            && (
-              <span className={styles.barTimers}>
-                {printTime(currentAudio.currentTime)} / {printTime(currentAudio.duration )}
-              </span>
-            )
-        }
-
         <audio className={styles.barAudio} src={currentTrack?.track_file} ref={audioRef} onTimeUpdate={handleTimeUpdate} />
 
         <ProgressBar max={currentAudio?.duration || 0} position={position} handleSeek={handleSeek} />
@@ -85,6 +76,13 @@ export default function Bar() {
           <Player currentTrack={currentTrack ?? getEmptyTrack()} isLooped={isLooped} togglePlay={togglePlay} toggleLoop={toggleLoop} />
 
           <Volume audioRef={audioRef} />
+
+          <span className={styles.barTimers}>
+            {
+              currentAudio && !isNaN(currentAudio.duration)
+                && `${printTime(currentAudio.currentTime)} / ${printTime(currentAudio.duration )}`
+            }
+          </span>
         </div>
       </div>
     </div>

@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 
-import {TrackType} from "@/types"
+import { TrackType } from "@/types"
 
 
 interface PlaylistState {

@@ -23,7 +23,7 @@ export default function Track({ playlist, track }: Props) {
     dispatch(setActivePlaylistAndTrackInside({ playlist, track }))
   }
 
-  const isCurrent: boolean = currentTrack !== null && currentTrack._id === track._id
+  const isCurrent: boolean = Boolean(currentTrack) && currentTrack._id === track._id
 
   return (
     <div className={styles.trackContainer} onClick={handleTrackClick}>
@@ -33,13 +33,13 @@ export default function Track({ playlist, track }: Props) {
             <svg>
               <use xlinkHref="/img/icon/sprite.svg#icon-note" />
             </svg>
+            {
+              isCurrent
+                && (
+                  <div className={cn(styles.trackMark, { [styles.animated]: !isPaused })} />
+                )
+            }
           </div>
-          {
-            isCurrent
-              && (
-                <div className={cn(styles.trackMark, { [styles.animated]: !isPaused })} />
-              )
-          }
           <div className={styles.trackTitleText}>
             <a className={styles.trackTitleLink} href="http://">
               {track.name} {/*<span>{additionals}</span>*/}

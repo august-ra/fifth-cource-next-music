@@ -14,21 +14,12 @@
 }
 
 .volumeImage {
-  width: 13px;
+  width: 16px;
   height: 18px;
   margin-right: 17px;
-
-  & svg {
-    width: 13px;
-    height: 18px;
-    fill: transparent;
-  }
+  fill: transparent;
 }
 
 .volumeProgress {
-  width: 109px;
-}
-
-.volumeProgressLine {
   width: 109px;
 }
