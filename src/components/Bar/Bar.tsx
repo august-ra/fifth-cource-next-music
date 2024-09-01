@@ -8,7 +8,7 @@ import Volume from "@components/Volume/Volume"
 
 import { ChangeEvent, useEffect, useRef, useState } from "react"
 import { useAppDispatch, useAppSelector } from "@/store/store"
-import { setIsPaused, toggleIsShuffled } from "@/store/features/playlistSlice"
+import { selectNextTrack, selectPrevTrack, setIsPaused, toggleIsShuffled } from "@/store/features/playlistSlice"
 import { getEmptyTrack } from "@/store/features/playlistSlice"
 import { printTime } from "@/utils/datetime"
 
@@ -69,6 +69,14 @@ export default function Bar() {
       currentAudio.currentTime = Number(event.target.value)
   }
 
+  function handleNextTrack() {
+    dispatch(selectNextTrack(false))
+  }
+
+  function handlePrevTrack() {
+    dispatch(selectPrevTrack())
+  }
+
   return (
     <div className={styles.bar}>
       <div className={styles.barContent}>
@@ -78,6 +86,7 @@ export default function Bar() {
 
         <div className={styles.barPlayer}>
           <Player currentTrack={currentTrack ?? getEmptyTrack()} isLooped={isLooped}
+                  handlePrev={handlePrevTrack} handleNext={handleNextTrack}
                   togglePlay={togglePlay} toggleLoop={toggleLoop} toggleShuffle={toggleShufled} />
 
           <Volume audioRef={audioRef} />

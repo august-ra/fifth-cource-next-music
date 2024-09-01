@@ -58,6 +58,20 @@ export const playlistSlice = createSlice({
     setCurrentTrack(state, action: PayloadAction<TrackType>) {
       state.currentTrack = action.payload
     },
+    selectPrevTrack(state) {
+      const index = state.shuffledPlaylist.findIndex((track) => track._id === state.currentTrack?._id)
+      const track = state.shuffledPlaylist[index - 1]
+
+      if (track)
+        state.currentTrack = track
+    },
+    selectNextTrack(state) {
+      const index = state.shuffledPlaylist.findIndex((track) => track._id === state.currentTrack?._id)
+      const track = state.shuffledPlaylist[index + 1]
+
+      if (track)
+        state.currentTrack = track
+    },
     setIsPaused(state, action: PayloadAction<boolean>) {
       state.isPaused = action.payload
     },
@@ -74,5 +88,5 @@ export const playlistSlice = createSlice({
   },
 })
 
-export const { setActivePlaylistAndTrackInside, setCurrentTrack, setIsPaused, toggleIsShuffled } = playlistSlice.actions
+export const { setActivePlaylistAndTrackInside, setCurrentTrack, setIsPaused, selectPrevTrack, selectNextTrack, toggleIsShuffled } = playlistSlice.actions
 export const playlistReducer = playlistSlice.reducer
