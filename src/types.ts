@@ -26,6 +26,8 @@ export interface TrackType {
   staredUser:          UserType[]
 }
 
+export type PlaylistType = TrackType[]
+
 export interface ErrorMessage {
   status:   number
   message:  string

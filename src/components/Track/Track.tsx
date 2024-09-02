@@ -6,13 +6,13 @@ import cn from "classnames"
 
 import { useAppDispatch, useAppSelector } from "@/store/store"
 import { setActivePlaylistAndTrackInside } from "@/store/features/playlistSlice"
-import { TrackType } from "@/types"
+import { PlaylistType, TrackType } from "@/types"
 import { printTime } from "@/utils/datetime"
 
 
 interface Props {
-  playlist: TrackType[]
-  track: TrackType
+  playlist: PlaylistType
+  track:    TrackType
 }
 
 export default function Track({ playlist, track }: Props) {

@@ -12,9 +12,7 @@ export const metadata: Metadata = {
   description: "Listen every song everywhere",
 }
 
-type RootLayoutType = Readonly<{
-  children: React.ReactNode
-}>
+type RootLayoutType = Readonly<{ children: React.ReactNode }>
 
 export default function RootLayout({ children }: RootLayoutType) {
   return (

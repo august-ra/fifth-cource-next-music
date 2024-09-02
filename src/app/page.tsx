@@ -2,11 +2,11 @@ import Bar from "@components/Bar/Bar"
 import Main from "@components/Main/Main"
 
 import { API } from "@/api/tracks"
-import { ErrorMessage, isError, TrackType } from "@/types"
+import { ErrorMessage, isError, PlaylistType } from "@/types"
 
 
 export default async function Home() {
-  let playlist: TrackType[] = []
+  let playlist: PlaylistType = []
   let errorMsg: ErrorMessage | null
 
   try {

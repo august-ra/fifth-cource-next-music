@@ -1,18 +1,18 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 
-import { TrackType } from "@/types"
+import { PlaylistType, TrackType } from "@/types"
 
 
 interface PlaylistState {
-  activePlaylist:   TrackType[]
-  shuffledPlaylist: TrackType[]
+  activePlaylist:   PlaylistType
+  shuffledPlaylist: PlaylistType
   currentTrack:     TrackType | null
   isPaused:         boolean
   isShuffled:       boolean
 }
 
 interface PlaylistInfo {
-  playlist: TrackType[]
+  playlist: PlaylistType
   track:    TrackType
 }
 

@@ -5,7 +5,7 @@ import styles from "./Filter.module.css"
 import FilterButton from "./FilterButton/FilterButton"
 
 import { useState } from "react"
-import { FilterKind, TrackType } from "@/types"
+import { FilterKind, PlaylistType } from "@/types"
 
 
 const filterKind: string[] = [
@@ -15,7 +15,7 @@ const filterKind: string[] = [
 ]
 
 interface Props {
-  playlist: TrackType[]
+  playlist: PlaylistType
 }
 
 export default function Filter({ playlist }: Props) {

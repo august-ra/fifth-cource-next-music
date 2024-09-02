@@ -1,10 +1,10 @@
-import { ErrorMessage, TrackType } from "@/types"
+import { ErrorMessage, PlaylistType } from "@/types"
 
 
 export const API = {
   uri: "https://webdev-music-003b5b991590.herokuapp.com",
 
-  async getTracks(): Promise<TrackType[] | ErrorMessage> {
+  async getTracks(): Promise<PlaylistType | ErrorMessage> {
     let status = 0
     const endpoint = `${this.uri}/catalog/track/all/`
 

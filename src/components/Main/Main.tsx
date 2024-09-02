@@ -6,11 +6,11 @@ import Playlist from "@components/Playlist/Playlist"
 import Searchbar from "@components/Searchbar/Searchbar"
 import Sidebar from "@components/Sidebar/Sidebar"
 
-import { ErrorMessage, TrackType } from "@/types"
+import { ErrorMessage, PlaylistType } from "@/types"
 
 
 interface Props {
-  playlist: TrackType[]
+  playlist: PlaylistType
   errorMsg: ErrorMessage | null
 }
 
