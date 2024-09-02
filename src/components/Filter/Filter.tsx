@@ -15,20 +15,20 @@ const filterKind: string[] = [
 ]
 
 interface Props {
-  trackList: TrackType[]
+  playlist: TrackType[]
 }
 
-export default function Filter({ trackList }: Props) {
+export default function Filter({ playlist }: Props) {
   const [openedFilter, setOpenedFilter] = useState<string | null>(null)
 
   function getUniqueLists(filter: string): string[] {
     switch (filter) {
       case FilterKind.artist:
-        return Array.from(new Set<string>(trackList.map((track) => track.author)))
+        return Array.from(new Set<string>(playlist.map((track) => track.author)))
           .filter((line) => line !== "-")
           .sort()
       case FilterKind.genre:
-        return Array.from(new Set<string>(trackList.map((track) => track.genre).flat()))
+        return Array.from(new Set<string>(playlist.map((track) => track.genre).flat()))
           .sort()
       case FilterKind.year:
         return ["По умолчанию", "Сначала новые", "Сначала старые"]

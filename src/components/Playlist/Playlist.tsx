@@ -8,11 +8,11 @@ import { ErrorMessage, TrackType } from "@/types"
 
 
 interface Props {
-  trackList: TrackType[]
-  errorMsg:  ErrorMessage | null
+  playlist: TrackType[]
+  errorMsg: ErrorMessage | null
 }
 
-export default function Playlist({ trackList, errorMsg }: Props) {
+export default function Playlist({ playlist, errorMsg }: Props) {
   if (errorMsg)
     return (
       <ErrorBlock errorMsg={errorMsg} />
@@ -32,8 +32,8 @@ export default function Playlist({ trackList, errorMsg }: Props) {
       </div>
       <div className={styles.playlistContent}>
         {
-          trackList?.map((track: TrackType) => (
-            <Track key={track._id} track={track} />
+          playlist?.map((track: TrackType) => (
+            <Track key={track._id} playlist={playlist} track={track} />
           ))
         }
       </div>

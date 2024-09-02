@@ -4,24 +4,28 @@ import cn from "classnames"
 
 import ActiveTrack from "@components/ActiveTrack/ActiveTrack"
 
+import { useAppSelector } from "@/store/store"
 import { TrackType } from "@/types"
 
 
 interface Props {
-  currentTrack: TrackType
-  isPaused:     boolean
-  isLooped:     boolean
-  togglePlay:   () => void
-  toggleLoop:   () => void
+  currentTrack:  TrackType
+  isLooped:      boolean
+  togglePlay:    () => void
+  toggleLoop:    () => void
+  toggleShuffle: () => void
+  handlePrev:    () => void
+  handleNext:    () => void
 }
 
-export default function Player({ currentTrack, isPaused, isLooped, togglePlay, toggleLoop }: Props) {
+export default function Player({ currentTrack, isLooped, togglePlay, toggleLoop, toggleShuffle, handlePrev, handleNext }: Props) {
+  const { isPaused, isShuffled } = useAppSelector((state) => state.playlist)
   const state = isPaused ? "play" : "pause"
 
   return (
     <div className={styles.player}>
       <div className={styles.playerControls}>
-        <div className={styles.playerBtnPrev}>
+        <div className={styles.playerBtnPrev} onClick={handlePrev}>
           <svg>
             <use xlinkHref="/img/icon/sprite.svg#icon-prev" />
           </svg>
@@ -31,7 +35,7 @@ export default function Player({ currentTrack, isPaused, isLooped, togglePlay, t
             <use xlinkHref={`/img/icon/sprite.svg#icon-${state}`} />
           </svg>
         </div>
-        <div className={styles.playerBtnNext}>
+        <div className={styles.playerBtnNext} onClick={handleNext}>
           <svg>
             <use xlinkHref="/img/icon/sprite.svg#icon-next" />
           </svg>
@@ -41,7 +45,7 @@ export default function Player({ currentTrack, isPaused, isLooped, togglePlay, t
             <use xlinkHref="/img/icon/sprite.svg#icon-repeat" />
           </svg>
         </div>
-        <div className={cn(styles.playerBtnShuffle, shared.btnIcon)}>
+        <div className={cn(styles.playerBtnShuffle, shared.btnIcon, { [shared.active]: isShuffled })} onClick={toggleShuffle}>
           <svg>
             <use xlinkHref="/img/icon/sprite.svg#icon-shuffle" />
           </svg>

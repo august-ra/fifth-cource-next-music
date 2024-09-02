@@ -2,22 +2,28 @@
 
 import styles from "./Track.module.css"
 import shared from "@/components/SharedButtons/SharedButtons.module.css"
+import cn from "classnames"
 
-import { useCurrentTrack } from "@contexts/CurrentTrackProvider"
+import { useAppDispatch, useAppSelector } from "@/store/store"
+import { setActivePlaylistAndTrackInside } from "@/store/features/playlistSlice"
 import { TrackType } from "@/types"
 import { printTime } from "@/utils/datetime"
 
 
 interface Props {
+  playlist: TrackType[]
   track: TrackType
 }
 
-export default function Track({ track }: Props) {
-  const { setCurrentTrack } = useCurrentTrack()
+export default function Track({ playlist, track }: Props) {
+  const dispatch = useAppDispatch()
+  const { currentTrack, isPaused } = useAppSelector((state) => state.playlist)
 
   function handleTrackClick() {
-    setCurrentTrack(track)
+    dispatch(setActivePlaylistAndTrackInside({ playlist, track }))
   }
+
+  const isCurrent: boolean = Boolean(currentTrack) && currentTrack._id === track._id
 
   return (
     <div className={styles.trackContainer} onClick={handleTrackClick}>
@@ -27,6 +33,12 @@ export default function Track({ track }: Props) {
             <svg>
               <use xlinkHref="/img/icon/sprite.svg#icon-note" />
             </svg>
+            {
+              isCurrent
+                && (
+                  <div className={cn(styles.trackMark, { [styles.animated]: !isPaused })} />
+                )
+            }
           </div>
           <div className={styles.trackTitleText}>
             <a className={styles.trackTitleLink} href="http://">
