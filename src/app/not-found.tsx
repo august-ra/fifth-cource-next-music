@@ -1,6 +1,6 @@
 "use client"
 
-import styles from "@components/Main/Main.module.css"
+import styles from "@/app/tracks/Tracks.module.css"
 import signing from "@/app/sign/Signing.module.css"
 import cn from "classnames"
 

@@ -1,5 +1,7 @@
-import Bar from "@components/Bar/Bar"
-import Main from "@components/Main/Main"
+import styles from "./Tracks.module.css"
+
+import Filter from "@components/Filter/Filter"
+import Playlist from "@components/Playlist/Playlist"
 
 import { API } from "@/api/tracks"
 import { ErrorMessage, isError, PlaylistType } from "@/types"
@@ -24,12 +26,10 @@ export default async function Home() {
   }
 
   return (
-    <div className="wrapper">
-      <div className="container">
-        <Main playlist={playlist} errorMsg={errorMsg} />
-        <Bar />
-        <footer className="footer" />
-      </div>
-    </div>
+    <>
+      <h2 className={styles.mainTitle}>Треки</h2>
+      <Filter playlist={playlist} />
+      <Playlist playlist={playlist} errorMsg={errorMsg} />
+    </>
   )
 }

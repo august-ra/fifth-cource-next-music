@@ -33,7 +33,7 @@ export default function Sidebar() {
         }
         <div className={styles.sidebarIcon} onClick={handleSigning}>
           <svg>
-            <use xlinkHref="/img/icon/sprite.svg#icon-logout"/>
+            <use xlinkHref="/img/icon/sprite.svg#icon-logout" />
           </svg>
         </div>
       </div>
