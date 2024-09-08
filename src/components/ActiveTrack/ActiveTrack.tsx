@@ -1,8 +1,11 @@
+"use client"
+
 import styles from "./ActiveTrack.module.css"
 import shared from "@/components/SharedButtons/SharedButtons.module.css"
 import cn from "classnames"
 
 import React from "react"
+import { useLikeButton } from "@/hooks/useLikeButton"
 import { TrackType } from "@/types"
 
 
@@ -11,6 +14,8 @@ interface Props {
 }
 
 function ActiveTrack({ currentTrack }: Props) {
+  const { isLiked, onLike } = useLikeButton(currentTrack)
+
   if (!currentTrack._id)
     return (
       <div className={cn(styles.track, styles.emptyTrack)}>
@@ -40,17 +45,10 @@ function ActiveTrack({ currentTrack }: Props) {
           <a className={styles.trackAlbumLink} href="http://">{currentTrack.author}</a>
         </div>
       </div>
-      <div className={styles.trackLikeContainer}>
-        <div className={cn(styles.trackLike, shared.btnIcon)}>
-          <svg>
-            <use xlinkHref="/img/icon/sprite.svg#icon-like" />
-          </svg>
-        </div>
-        <div className={cn(styles.trackDislike, shared.btnIcon)}>
-          <svg>
-            <use xlinkHref="/img/icon/sprite.svg#icon-dislike" />
-          </svg>
-        </div>
+      <div className={cn(styles.trackLikeContainer, shared.btnIcon, { [shared.liked]: isLiked })} onClick={onLike}>
+        <svg>
+          <use xlinkHref="/img/icon/sprite.svg#icon-like" />
+        </svg>
       </div>
     </div>
   )

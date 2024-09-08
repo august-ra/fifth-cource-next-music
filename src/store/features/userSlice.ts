@@ -10,7 +10,7 @@ const getTokens     = createAsyncThunk("user/getTokens",     UserAPI.getTokens)
 const refreshTokens = createAsyncThunk("user/refreshTokens", UserAPI.refreshTokens)
 
 
-interface TokenState {
+export interface TokenState {
   access:  string | null
   refresh: string | null
 }

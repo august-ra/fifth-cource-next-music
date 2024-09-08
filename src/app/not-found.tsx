@@ -8,6 +8,7 @@ import Image from "next/image"
 import Bar from "@components/Bar/Bar"
 import Nav from "@components/Nav/Nav"
 import Searchbar from "@components/Searchbar/Searchbar"
+import Sidebar from "@components/Sidebar/Sidebar"
 
 import { MouseEvent } from "react"
 import { useRouter } from "next/navigation"
@@ -43,6 +44,8 @@ export default function NotFound() {
               Вернуться на главную
             </button>
           </div>
+
+          <Sidebar />
         </main>
 
         <Bar />

@@ -3,11 +3,14 @@
 import styles from "../Sidebar.module.css"
 
 import { useRouter } from "next/navigation"
+import { useInitFavouriteTracks } from "@/hooks/useInitFavouriteTracks"
 import { useAppDispatch, useAppSelector } from "@/store/store"
 import { signOut } from "@/store/features/userSlice"
 
 
 export default function SidebarPersonal() {
+  useInitFavouriteTracks()
+
   const router   = useRouter()
   const dispatch = useAppDispatch()
   const user     = useAppSelector((state) => state.user.user)

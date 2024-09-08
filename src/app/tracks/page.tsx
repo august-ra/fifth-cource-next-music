@@ -3,7 +3,7 @@ import styles from "./Tracks.module.css"
 import Filter from "@components/Filter/Filter"
 import Playlist from "@components/Playlist/Playlist"
 
-import { API } from "@/api/tracks"
+import { TracksAPI } from "@/api/tracks"
 import { ErrorMessage, isError, PlaylistType } from "@/types"
 
 
@@ -12,7 +12,7 @@ export default async function Home() {
   let errorMsg: ErrorMessage | null
 
   try {
-    const data = await API.getTracks()
+    const data = await TracksAPI.getTracks()
 
     if (isError(data))
       errorMsg = data as ErrorMessage
