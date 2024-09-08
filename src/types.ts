@@ -9,6 +9,17 @@ export interface UserType {
   email:      string
 }
 
+export interface UserFormData {
+  email:    string
+  password: string
+}
+
+export interface CreatedUserFormData {
+  username:   string
+  email:      string
+  password:   string
+}
+
 export interface TrackType {
   _id:                 number
   name:                string

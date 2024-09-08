@@ -6,10 +6,22 @@ import Image from "next/image"
 import Link from "next/link"
 
 import { useState } from "react"
+import { useAppDispatch, useAppSelector } from "@/store/store"
+import { signOut } from "@/store/features/userSlice"
 
 
 export default function Nav() {
+  const dispatch = useAppDispatch()
+  const user = useAppSelector((state) => state.user.user)
   const [isOpened, setIsOpened] = useState<boolean>(false)
+
+  function handleSignOut(event: React.MouseEvent<HTMLAnchorElement>) {
+    event.preventDefault()
+
+    dispatch(signOut())
+
+    setIsOpened(false)
+  }
 
   return (
     <nav className={styles.nav}>
@@ -30,11 +42,26 @@ export default function Nav() {
               <li className={styles.menuItem}>
                 <Link href="#" className={styles.menuLink}>Главное</Link>
               </li>
+
+              {
+                user && user.username
+                  && (
+                    <li className={styles.menuItem}>
+                      <Link href="#" className={styles.menuLink}>Мой плейлист</Link>
+                    </li>
+                  )
+              }
+
               <li className={styles.menuItem}>
-                <Link href="#" className={styles.menuLink}>Мой плейлист</Link>
-              </li>
-              <li className={styles.menuItem}>
-                <Link className={styles.menuLink} href="/sign/in">Войти</Link>
+                {
+                  user && user.username
+                    ? (
+                      <Link className={styles.menuLink} href="#" onClick={handleSignOut}>Выйти</Link>
+                    )
+                    : (
+                      <Link className={styles.menuLink} href="/sign/in">Войти</Link>
+                    )
+                }
               </li>
             </ul>
           </div>
