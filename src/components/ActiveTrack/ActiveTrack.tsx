@@ -15,7 +15,7 @@ export default function ActiveTrack({ currentTrack }: Props) {
       <div className={cn(styles.track, styles.emptyTrack)}>
         <div className={styles.trackImage}>
           <svg>
-            <use xlinkHref="/img/icon/sprite.svg#icon-note"/>
+            <use xlinkHref="/img/icon/sprite.svg#icon-note" />
           </svg>
         </div>
         <div className={cn(styles.trackAlbum, styles.trackAlbumLink)}>

@@ -14,7 +14,7 @@ export default function Nav() {
   return (
     <nav className={styles.nav}>
       <div className={styles.logo}>
-        <Image className={styles.logoImage} src="/img/logo.png" alt="SkyPro Logo" width={114} height={17} />
+        <Image className={styles.logoImage} src="/img/logo.svg" alt="SkyPro Logo" width={114} height={17} />
       </div>
 
       <div className={styles.burger} onClick={() => setIsOpened((prev) => !prev)}>

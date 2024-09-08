@@ -14,21 +14,15 @@ export default function Sidebar() {
       </div>
       <div className={styles.sidebarBlock}>
         <div className={styles.sidebarList}>
-          <div className={styles.sidebarItem}>
-            <a className={styles.sidebarLink} href="#">
-              <img className={styles.sidebarImg} src="/img/playlist01.png" alt="day's playlist" />
-            </a>
-          </div>
-          <div className={styles.sidebarItem}>
-            <a className={styles.sidebarLink} href="#">
-              <img className={styles.sidebarImg} src="/img/playlist02.png" alt="day's playlist" />
-            </a>
-          </div>
-          <div className={styles.sidebarItem}>
-            <a className={styles.sidebarLink} href="#">
-              <img className={styles.sidebarImg} src="/img/playlist03.png" alt="day's playlist" />
-            </a>
-          </div>
+          <Link href="#">
+            <Image src="/img/playlist01.png" alt="day's playlist" width={250} height={150} />
+          </Link>
+          <Link href="#">
+            <Image src="/img/playlist02.png" alt="dancing hit's playlist" width={250} height={150} />
+          </Link>
+          <Link href="#">
+            <Image src="/img/playlist03.png" alt="indie's playlist" width={250} height={150} />
+          </Link>
         </div>
       </div>
     </div>
