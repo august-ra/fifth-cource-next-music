@@ -8,7 +8,7 @@ export const UserAPI = {
     const response = await fetch(`${UserAPI.uri}/user/login/`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(userData),
     })
@@ -25,7 +25,7 @@ export const UserAPI = {
     const response = await fetch(`${UserAPI.uri}/user/signup/`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(userData),
     })
@@ -42,7 +42,7 @@ export const UserAPI = {
     const response = await fetch(`${UserAPI.uri}/user/token/`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(userData),
     })
@@ -59,7 +59,7 @@ export const UserAPI = {
     const response = await fetch(`${UserAPI.uri}/user/token/refresh`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ refresh: token }),
     })

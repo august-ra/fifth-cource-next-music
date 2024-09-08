@@ -6,19 +6,25 @@ import Image from "next/image"
 import Link from "next/link"
 
 import { useState } from "react"
+import { useQuit } from "@/hooks/useQuit"
 import { useAppDispatch, useAppSelector } from "@/store/store"
-import { signOut } from "@/store/features/userSlice"
+import { setIsPaused } from "@/store/features/playlistSlice"
 
 
 export default function Nav() {
   const dispatch = useAppDispatch()
   const user = useAppSelector((state) => state.user.user)
+  const { onQuit } = useQuit()
   const [isOpened, setIsOpened] = useState<boolean>(false)
+
+  function handleStopPlaying() {
+    dispatch(setIsPaused(true))
+  }
 
   function handleSignOut(event: React.MouseEvent<HTMLAnchorElement>) {
     event.preventDefault()
 
-    dispatch(signOut())
+    onQuit()
 
     setIsOpened(false)
   }
@@ -59,7 +65,7 @@ export default function Nav() {
                       <Link className={styles.menuLink} href="#" onClick={handleSignOut}>Выйти</Link>
                     )
                     : (
-                      <Link className={styles.menuLink} href="/sign/in">Войти</Link>
+                      <Link className={styles.menuLink} href="/sign/in" onClick={handleStopPlaying}>Войти</Link>
                     )
                 }
               </li>

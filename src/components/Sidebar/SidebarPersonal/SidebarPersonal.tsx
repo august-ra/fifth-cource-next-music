@@ -4,8 +4,9 @@ import styles from "../Sidebar.module.css"
 
 import { useRouter } from "next/navigation"
 import { useInitFavouriteTracks } from "@/hooks/useInitFavouriteTracks"
+import { useQuit } from "@/hooks/useQuit"
 import { useAppDispatch, useAppSelector } from "@/store/store"
-import { signOut } from "@/store/features/userSlice"
+import { setIsPaused } from "@/store/features/playlistSlice"
 
 
 export default function SidebarPersonal() {
@@ -14,12 +15,15 @@ export default function SidebarPersonal() {
   const router   = useRouter()
   const dispatch = useAppDispatch()
   const user     = useAppSelector((state) => state.user.user)
+  const { onQuit } = useQuit()
 
   function handleSigning() {
     if (user && user.username)
-      dispatch(signOut())
-    else
-      router.push("/sign/in")
+      return onQuit()
+
+    router.replace("/sign/in")
+
+    dispatch(setIsPaused(true))
   }
 
   return (
