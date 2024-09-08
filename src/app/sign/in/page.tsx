@@ -5,13 +5,15 @@ import cn from "classnames"
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { useAppDispatch } from "@/store/store"
-import { getTokens, signIn } from "@/store/features/userSlice"
-import { UserFormData } from "@/types"
+import { useAppDispatch, useAppSelector } from "@/store/store"
+import { getTokens, publicError, signIn } from "@/store/features/userSlice"
+import { UserAPI } from "@/api/users"
+import { isError, UserFormData } from "@/types"
 
 
 export default function LoginPage() {
   const router = useRouter()
+  const errorMsg = useAppSelector((state) => state.user.errorMsg)
   const dispatch = useAppDispatch()
   const [formData, setFormData] = useState<UserFormData>({
     email:    "",
@@ -30,13 +32,13 @@ export default function LoginPage() {
   async function handleSubmit(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault()
 
-    try {
-      await dispatch(signIn(formData))
-      await dispatch(getTokens(formData))
+    await dispatch(signIn(formData))
+    await dispatch(getTokens(formData))
+
+    if (!UserAPI.error.message)
       router.push('/')
-    } catch (error) {
-      console.error(error)
-    }
+
+    dispatch(publicError(UserAPI.error))
   }
 
   function handleRedirectToSigningUp(event: React.MouseEvent<HTMLButtonElement>) {
@@ -51,6 +53,15 @@ export default function LoginPage() {
              value={formData.email} onChange={handleChangeFormData} />
       <input className={styles.modalInput} type="password" name="password" placeholder="Пароль"
              value={formData.password} onChange={handleChangeFormData} />
+
+      {
+        isError(errorMsg)
+          && (
+            <div className={styles.errorBlock}>
+              {errorMsg.message}
+            </div>
+          )
+      }
 
       <button className={cn(styles.modalEnter, styles.gaped)} onClick={handleSubmit}>Войти</button>
       <button className={styles.modalAdditional} onClick={handleRedirectToSigningUp}>Зарегистрироваться</button>

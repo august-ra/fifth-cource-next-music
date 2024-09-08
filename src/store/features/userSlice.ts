@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
 
 import { UserAPI } from "@/api/users"
-import { UserType } from "@/types"
+import { ErrorMessage, getEmptyError, isError, UserType } from "@/types"
 
 
 const signIn        = createAsyncThunk("user/getUser",       UserAPI.signIn)
@@ -16,14 +16,16 @@ export interface TokenState {
 }
 
 interface UserState {
-  user: UserType | null
-  tokens: TokenState
+  errorMsg: ErrorMessage | null
+  user:     UserType | null
+  tokens:   TokenState
 }
 
 const initialState: UserState = {
-  user: null,
+  errorMsg: getEmptyError(),
+  user:     null,
   tokens: {
-    access: null,
+    access:  null,
     refresh: null,
   },
 }
@@ -32,29 +34,52 @@ export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
+    publicError: (state, action: PayloadAction<ErrorMessage>) => {
+      state.errorMsg = action.payload
+    },
     signOut: (state) => {
-      state.user = null
+      state.errorMsg = getEmptyError()
+      state.user     = null
       state.tokens.access  = null
       state.tokens.refresh = null
     },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(signIn.fulfilled, (state, action: PayloadAction<UserType>) => {
-        state.user = action.payload
+      .addCase(signIn.fulfilled, (state, action: PayloadAction<UserType | ErrorMessage>) => {
+        if (isError(action.payload)) {
+          state.errorMsg = action.payload
+          state.user     = null
+        } else {
+          state.errorMsg = getEmptyError()
+          state.user     = action.payload
+        }
       })
       .addCase(signIn.rejected, (state, action) => {
         console.error("Error:", action.error.message)
       })
-      .addCase(signUp.fulfilled, (state, action: PayloadAction<UserType>) => {
-        state.user = action.payload
+      .addCase(signUp.fulfilled, (state, action: PayloadAction<UserType | ErrorMessage>) => {
+        if (isError(action.payload)) {
+          state.errorMsg = action.payload
+          state.user     = null
+        } else {
+          state.errorMsg = getEmptyError()
+          state.user     = action.payload
+        }
       })
       .addCase(signUp.rejected, (state, action) => {
         console.error("Error:", action.error.message)
       })
-      .addCase(getTokens.fulfilled, (state, action: PayloadAction<TokenState>) => {
-        state.tokens.access  = action.payload.access
-        state.tokens.refresh = action.payload.refresh
+      .addCase(getTokens.fulfilled, (state, action: PayloadAction<TokenState | ErrorMessage>) => {
+        if (isError(action.payload)) {
+          state.errorMsg = action.payload
+          state.tokens.access  = null
+          state.tokens.refresh = null
+        } else {
+          state.errorMsg = getEmptyError()
+          state.tokens.access = action.payload.access
+          state.tokens.refresh = action.payload.refresh
+        }
       })
       .addCase(getTokens.rejected, (state, action) => {
         console.error("Error:", action.error.message)
@@ -70,5 +95,5 @@ export const userSlice = createSlice({
 })
 
 export { signIn, signUp, getTokens, refreshTokens }
-export const { signOut } = userSlice.actions
+export const { publicError, signOut } = userSlice.actions
 export const userReducer = userSlice.reducer

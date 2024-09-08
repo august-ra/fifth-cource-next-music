@@ -5,13 +5,15 @@ import cn from "classnames"
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { useAppDispatch } from "@/store/store"
-import { getTokens, signUp } from "@/store/features/userSlice"
-import { CreatedUserFormData } from "@/types"
+import { useAppDispatch, useAppSelector } from "@/store/store"
+import { getTokens, publicError, signUp } from "@/store/features/userSlice"
+import { UserAPI } from "@/api/users"
+import { CreatedUserFormData, isError } from "@/types"
 
 
 export default function LoginPage() {
   const router = useRouter()
+  const errorMsg = useAppSelector((state) => state.user.errorMsg)
   const dispatch = useAppDispatch()
   const [formData, setFormData] = useState<CreatedUserFormData>({
     email:    "",
@@ -31,13 +33,13 @@ export default function LoginPage() {
   async function handleSubmit(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault()
 
-    try {
-      await dispatch(signUp(formData))
-      await dispatch(getTokens(formData))
+    await dispatch(signUp(formData))
+    await dispatch(getTokens(formData))
+
+    if (!UserAPI.error.message)
       router.push('/')
-    } catch (error) {
-      console.error(error)
-    }
+
+    dispatch(publicError(UserAPI.error))
   }
 
   return (
@@ -48,6 +50,15 @@ export default function LoginPage() {
              value={formData.password} onChange={handleChangeFormData} />
       <input className={styles.modalInput} type="text" name="username" placeholder="Имя пользоателя"
              value={formData.username} onChange={handleChangeFormData} />
+
+      {
+        isError(errorMsg)
+          && (
+            <div className={styles.errorBlock}>
+              {errorMsg.message}
+            </div>
+          )
+      }
 
       <button className={cn(styles.modalEnter, styles.gaped)} onClick={handleSubmit}>Зарегистрироваться</button>
     </>

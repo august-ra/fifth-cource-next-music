@@ -105,3 +105,12 @@
     background-color: #d9d9d9;
   }
 }
+
+.errorBlock {
+  width: 308px;
+  position: absolute;
+  top: 459px;
+  /* color: #a53939; */
+  color: #ff5555;
+  text-align: center;
+}
