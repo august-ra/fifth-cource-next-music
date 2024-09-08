@@ -40,14 +40,14 @@ export default function Nav() {
           <div className={styles.menu}>
             <ul className={styles.menuList}>
               <li className={styles.menuItem}>
-                <Link href="#" className={styles.menuLink}>Главное</Link>
+                <Link className={styles.menuLink} href="/tracks/">Главное</Link>
               </li>
 
               {
                 user && user.username
                   && (
                     <li className={styles.menuItem}>
-                      <Link href="#" className={styles.menuLink}>Мой плейлист</Link>
+                      <Link className={styles.menuLink} href="/tracks/favourite">Мой плейлист</Link>
                     </li>
                   )
               }
