@@ -2,6 +2,7 @@ import styles from "./ActiveTrack.module.css"
 import shared from "@/components/SharedButtons/SharedButtons.module.css"
 import cn from "classnames"
 
+import React from "react"
 import { TrackType } from "@/types"
 
 
@@ -9,7 +10,7 @@ interface Props {
   currentTrack: TrackType
 }
 
-export default function ActiveTrack({ currentTrack }: Props) {
+function ActiveTrack({ currentTrack }: Props) {
   if (!currentTrack._id)
     return (
       <div className={cn(styles.track, styles.emptyTrack)}>
@@ -54,3 +55,5 @@ export default function ActiveTrack({ currentTrack }: Props) {
     </div>
   )
 }
+
+export default React.memo(ActiveTrack)
