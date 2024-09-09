@@ -15,7 +15,7 @@ export function useLikeButton(currentTrack: TrackType): HookResult {
   const tokens          = useAppSelector((state) => state.user.tokens)
   const favouriteTracks = useAppSelector((state) => state.playlist.favouriteTracks)
 
-  const isLiked: boolean = Boolean(favouriteTracks.find((track) => track._id === currentTrack._id))
+  const isLiked: boolean = Boolean(tokens.access && favouriteTracks.find((track) => track._id === currentTrack._id))
 
   const handleLike = async (event: React.MouseEvent<HTMLDivElement>) => {
     event.stopPropagation()
@@ -24,7 +24,7 @@ export function useLikeButton(currentTrack: TrackType): HookResult {
       return
 
     try {
-      await TracksAPI.changeLikeTrack(currentTrack._id, !isLiked, tokens.access, tokens.refresh)
+      await TracksAPI.changeLikeTrack(currentTrack._id, !isLiked, tokens)
 
       if (isLiked)
         dispatch(dislikeTrack(currentTrack))
