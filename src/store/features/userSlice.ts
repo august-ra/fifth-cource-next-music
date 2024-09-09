@@ -37,6 +37,35 @@ export const userSlice = createSlice({
     publicError: (state, action: PayloadAction<ErrorMessage>) => {
       state.errorMsg = action.payload
     },
+    signIn: (state, action: PayloadAction<UserType | ErrorMessage>) => {
+      if (isError(action.payload)) {
+        state.errorMsg = action.payload
+        state.user     = null
+      } else {
+        state.errorMsg = getEmptyError()
+        state.user     = action.payload
+      }
+    },
+    signUp: (state, action: PayloadAction<UserType | ErrorMessage>) => {
+      if (isError(action.payload)) {
+        state.errorMsg = action.payload
+        state.user     = null
+      } else {
+        state.errorMsg = getEmptyError()
+        state.user     = action.payload
+      }
+    },
+    getTokens: (state, action: PayloadAction<TokenState | ErrorMessage>) => {
+      if (isError(action.payload)) {
+        state.errorMsg = action.payload
+        state.tokens.access  = null
+        state.tokens.refresh = null
+      } else {
+        state.errorMsg = getEmptyError()
+        state.tokens.access = action.payload.access
+        state.tokens.refresh = action.payload.refresh
+      }
+    },
     signOut: (state) => {
       state.errorMsg = getEmptyError()
       state.user     = null
@@ -47,39 +76,19 @@ export const userSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(signIn.fulfilled, (state, action: PayloadAction<UserType | ErrorMessage>) => {
-        if (isError(action.payload)) {
-          state.errorMsg = action.payload
-          state.user     = null
-        } else {
-          state.errorMsg = getEmptyError()
-          state.user     = action.payload
-        }
+        userSlice.actions.signIn(state, action)
       })
       .addCase(signIn.rejected, (state, action) => {
         console.error("Error:", action.error.message)
       })
       .addCase(signUp.fulfilled, (state, action: PayloadAction<UserType | ErrorMessage>) => {
-        if (isError(action.payload)) {
-          state.errorMsg = action.payload
-          state.user     = null
-        } else {
-          state.errorMsg = getEmptyError()
-          state.user     = action.payload
-        }
+        userSlice.actions.signUp(state, action)
       })
       .addCase(signUp.rejected, (state, action) => {
         console.error("Error:", action.error.message)
       })
       .addCase(getTokens.fulfilled, (state, action: PayloadAction<TokenState | ErrorMessage>) => {
-        if (isError(action.payload)) {
-          state.errorMsg = action.payload
-          state.tokens.access  = null
-          state.tokens.refresh = null
-        } else {
-          state.errorMsg = getEmptyError()
-          state.tokens.access = action.payload.access
-          state.tokens.refresh = action.payload.refresh
-        }
+        userSlice.actions.getTokens(state, action)
       })
       .addCase(getTokens.rejected, (state, action) => {
         console.error("Error:", action.error.message)
