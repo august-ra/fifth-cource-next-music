@@ -39,4 +39,8 @@
     fill: #fff;
     stroke: #fff;
   }
+
+  &.liked svg {
+    fill: #ad61ff;
+  }
 }

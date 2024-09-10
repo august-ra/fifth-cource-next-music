@@ -9,6 +9,17 @@ export interface UserType {
   email:      string
 }
 
+export interface UserFormData {
+  email:    string
+  password: string
+}
+
+export interface CreatedUserFormData {
+  username:   string
+  email:      string
+  password:   string
+}
+
 export interface TrackType {
   _id:                 number
   name:                string
@@ -26,10 +37,20 @@ export interface TrackType {
   staredUser:          UserType[]
 }
 
+export type PlaylistType = TrackType[]
+
 export interface ErrorMessage {
   status:   number
   message:  string
   endpoint: string
+}
+
+export function getEmptyError(): ErrorMessage {
+  return {
+    status: 0,
+    message: "",
+    endpoint: "",
+  }
 }
 
 export function isError(pet: ErrorMessage | any): pet is ErrorMessage {

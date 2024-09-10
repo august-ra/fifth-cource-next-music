@@ -52,7 +52,7 @@ export default function Bar() {
   }, [isLooped])
 
   function togglePlay() {
-    if (!currentAudio)
+    if (!currentAudio || !currentTrack || !currentTrack._id)
       return
 
     if (currentAudio.paused)

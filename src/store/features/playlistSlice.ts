@@ -1,24 +1,30 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit"
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
 
-import { TrackType } from "@/types"
+import { TracksAPI } from "@/api/tracks"
+import { PlaylistType, TrackType } from "@/types"
+
+
+const getFavouriteTracks = createAsyncThunk("playlist/getFavouriteTracks", TracksAPI.getFavouriteTracks)
 
 
 interface PlaylistState {
-  activePlaylist:   TrackType[]
-  shuffledPlaylist: TrackType[]
+  activePlaylist:   PlaylistType
+  shuffledPlaylist: PlaylistType
+  favouriteTracks:  PlaylistType
   currentTrack:     TrackType | null
   isPaused:         boolean
   isShuffled:       boolean
 }
 
 interface PlaylistInfo {
-  playlist: TrackType[]
+  playlist: PlaylistType
   track:    TrackType
 }
 
 const initialState: PlaylistState = {
   activePlaylist:   [],
   shuffledPlaylist: [],
+  favouriteTracks:  [],
   currentTrack:     null,
   isPaused:         true,
   isShuffled:       false,
@@ -87,8 +93,24 @@ export const playlistSlice = createSlice({
       else
         state.shuffledPlaylist = state.activePlaylist
     },
+    likeTrack(state, action: PayloadAction<TrackType>) {
+      state.favouriteTracks.push(action.payload)
+    },
+    dislikeTrack(state, action: PayloadAction<TrackType>) {
+      state.favouriteTracks = state.favouriteTracks.filter((track) => track._id !== action.payload._id)
+    },
+  },
+  extraReducers(builder) {
+    builder
+      .addCase(getFavouriteTracks.fulfilled, (state, action) => {
+        state.favouriteTracks = action.payload
+      })
+      .addCase(getFavouriteTracks.rejected, (state, action) => {
+        console.error("Error:", action.error.message)
+      })
   },
 })
 
-export const { setActivePlaylistAndTrackInside, setCurrentTrack, setIsPaused, selectPrevTrack, selectNextTrack, toggleIsShuffled } = playlistSlice.actions
+export { getFavouriteTracks }
+export const { setActivePlaylistAndTrackInside, setCurrentTrack, setIsPaused, selectPrevTrack, selectNextTrack, toggleIsShuffled, likeTrack, dislikeTrack } = playlistSlice.actions
 export const playlistReducer = playlistSlice.reducer

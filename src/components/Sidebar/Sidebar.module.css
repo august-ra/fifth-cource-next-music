@@ -33,35 +33,15 @@
   }
 }
 
-.sidebarBlock {
+.sidebarList {
   height: 100%;
   padding: 240px 0 0 0;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-}
-
-.sidebarList {
-  display: flex;
-  flex-direction: column;
   align-items: center;
-}
+  gap: 30px;
 
-.sidebarItem {
-  width: 250px;
-  height: 150px;
-
-  &:not(:last-child) {
-    margin-bottom: 30px;
+  & img {
+    display: block;
   }
-}
-
-.sidebarLink {
-  width: 100%;
-  height: 100%;
-}
-
-.sidebarImg {
-  width: 100%;
-  height: auto;
 }

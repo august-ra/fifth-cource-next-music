@@ -6,18 +6,20 @@ import cn from "classnames"
 
 import { useAppDispatch, useAppSelector } from "@/store/store"
 import { setActivePlaylistAndTrackInside } from "@/store/features/playlistSlice"
-import { TrackType } from "@/types"
+import { useLikeButton } from "@/hooks/useLikeButton"
+import { PlaylistType, TrackType } from "@/types"
 import { printTime } from "@/utils/datetime"
 
 
 interface Props {
-  playlist: TrackType[]
-  track: TrackType
+  playlist: PlaylistType
+  track:    TrackType
 }
 
 export default function Track({ playlist, track }: Props) {
   const dispatch = useAppDispatch()
   const { currentTrack, isPaused } = useAppSelector((state) => state.playlist)
+  const { isLiked, onLike } = useLikeButton(track)
 
   function handleTrackClick() {
     dispatch(setActivePlaylistAndTrackInside({ playlist, track }))
@@ -53,7 +55,7 @@ export default function Track({ playlist, track }: Props) {
           <a className={styles.trackAlbumLink} href="http://">{track.album}</a>
         </div>
         <div className={styles.trackTime}>
-          <div className={shared.btnIcon}>
+          <div className={cn(shared.btnIcon, { [shared.liked]: isLiked })} onClick={onLike}>
             <svg>
               <use xlinkHref="/img/icon/sprite.svg#icon-like" />
             </svg>

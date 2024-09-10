@@ -4,11 +4,11 @@ import cn from "classnames"
 import Track from "@components/Track/Track"
 import ErrorBlock from "@components/ErrorBlock/ErrorBlock"
 
-import { ErrorMessage, TrackType } from "@/types"
+import { ErrorMessage, PlaylistType, TrackType } from "@/types"
 
 
 interface Props {
-  playlist: TrackType[]
+  playlist: PlaylistType
   errorMsg: ErrorMessage | null
 }
 
