@@ -33,6 +33,44 @@ export default function LoginPage() {
   async function handleSubmit(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault()
 
+    const emptyEmail    = !formData.email
+    const emptyPassword = !formData.password
+    const emptyUsername = !formData.username
+
+    if (emptyEmail || emptyPassword || emptyUsername) {
+      let message:   string = ""
+      let delimiter: string = ""
+
+      const fillDelimiter = (field: string) => {
+        if (message)
+          delimiter = " и "
+
+        message = `${message}${delimiter}${field}`
+      }
+
+      if (emptyEmail && emptyPassword && emptyUsername) {
+        message   = "E-mail, пароль и имя пользователя"
+        delimiter = "3"
+      }
+      else {
+        if (emptyEmail)
+          message = "E-mail"
+
+        if (emptyPassword)
+          fillDelimiter("пароль")
+
+        if (emptyUsername)
+          fillDelimiter("имя пользователя")
+      }
+
+      if (!delimiter)
+        dispatch(publicError({ endpoint: "", status: 0, message: `Не заполнено поле ${message}` }))
+      else
+        dispatch(publicError({ endpoint: "", status: 0, message: `Не заполнены поля\n${message}` }))
+
+      return
+    }
+
     await dispatch(signUp(formData))
     await dispatch(getTokens(formData))
 

@@ -32,6 +32,26 @@ export default function LoginPage() {
   async function handleSubmit(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault()
 
+    const emptyEmail    = !formData.email
+    const emptyPassword = !formData.password
+
+    if (emptyEmail || emptyPassword) {
+      if (emptyEmail && emptyPassword)
+        dispatch(publicError({ endpoint: "", status: 0, message: "Не заполнены поля\nE-mail и пароль" }))
+      else {
+        let message = ""
+
+        if (emptyEmail)
+          message = "E-mail"
+        else if (emptyPassword)
+          message = "пароль"
+
+        dispatch(publicError({ endpoint: "", status: 0, message: `Не заполнено поле ${message}` }))
+      }
+
+      return
+    }
+
     await dispatch(signIn(formData))
     await dispatch(getTokens(formData))
 

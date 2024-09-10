@@ -2,7 +2,7 @@ import { CreatedUserFormData, getEmptyError, UserFormData } from "@/types"
 
 
 export const UserAPI = {
-  uri: "https://webdev-music-003b5b991590.herokuapp.com",
+  uri:   "https://webdev-music-003b5b991590.herokuapp.com",
   error: getEmptyError(),
 
 
