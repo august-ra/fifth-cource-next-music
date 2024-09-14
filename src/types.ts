@@ -47,14 +47,14 @@ export interface ErrorMessage {
 
 export function getEmptyError(): ErrorMessage {
   return {
-    status: 0,
-    message: "",
+    status:    0,
+    message:  "",
     endpoint: "",
   }
 }
 
 export function isError(pet: ErrorMessage | any): pet is ErrorMessage {
-  return (<ErrorMessage>pet).message !== undefined;
+  return (<ErrorMessage>pet).message !== undefined
 }
 
 /* enums */

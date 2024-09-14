@@ -34,7 +34,7 @@ export default function Bar() {
   }, [])
 
   useEffect(() => {
-    if (!currentAudio)
+    if (!currentTrack || !currentAudio)
       return
 
     dispatch(setIsPaused(false))
@@ -67,7 +67,7 @@ export default function Bar() {
     setIsLooped((prev) => !prev)
   }
 
-  function toggleShufled() {
+  function toggleShuffled() {
     dispatch(toggleIsShuffled())
   }
 
@@ -102,7 +102,7 @@ export default function Bar() {
         <div className={styles.barPlayer}>
           <Player currentTrack={currentTrack ?? getEmptyTrack()} isLooped={isLooped}
                   handlePrev={handlePrevTrack} handleNext={handleNextTrack}
-                  togglePlay={togglePlay} toggleLoop={toggleLoop} toggleShuffle={toggleShufled} />
+                  togglePlay={togglePlay} toggleLoop={toggleLoop} toggleShuffle={toggleShuffled} />
 
           <Volume audioRef={audioRef} />
 

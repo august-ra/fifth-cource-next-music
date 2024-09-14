@@ -9,7 +9,7 @@ export function makeStore() {
     reducer: combineReducers({
       playlist: playlistReducer,
       user:     userReducer,
-    })
+    }),
   })
 }
 
