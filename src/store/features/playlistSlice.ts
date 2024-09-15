@@ -1,16 +1,19 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
 
 import { TracksAPI } from "@/api/tracks"
-import { PlaylistType, TrackType } from "@/types/tracksTypes"
+import { CatalogsType, PlaylistType, TrackType } from "@/types/tracksTypes"
 
 
 const getFavouriteTracks = createAsyncThunk("playlist/getFavouriteTracks", TracksAPI.getFavouriteTracks)
+const getCatalogs        = createAsyncThunk("playlist/getCatalogs",        TracksAPI.getCatalogs)
 
 
 interface PlaylistState {
   activePlaylist:   PlaylistType
   shuffledPlaylist: PlaylistType
   favouriteTracks:  PlaylistType
+  catalogs:         CatalogsType
+  catalogName:      string
   currentTrack:     TrackType | null
   isPaused:         boolean
   isShuffled:       boolean
@@ -25,6 +28,8 @@ const initialState: PlaylistState = {
   activePlaylist:   [],
   shuffledPlaylist: [],
   favouriteTracks:  [],
+  catalogs:         [],
+  catalogName:      "",
   currentTrack:     null,
   isPaused:         true,
   isShuffled:       false,
@@ -52,6 +57,14 @@ export const playlistSlice = createSlice({
   name: "playlist",
   initialState,
   reducers: {
+    setActivePlaylist(state, action: PayloadAction<PlaylistType>) {
+      state.activePlaylist = action.payload
+
+      if (state.isShuffled)
+        state.shuffledPlaylist = state.activePlaylist.toSorted(() => 0.5 - Math.random())
+      else
+        state.shuffledPlaylist = state.activePlaylist
+    },
     setActivePlaylistAndTrackInside(state, action: PayloadAction<PlaylistInfo>) {
       state.activePlaylist = action.payload.playlist
       state.currentTrack   = action.payload.track
@@ -60,6 +73,9 @@ export const playlistSlice = createSlice({
         state.shuffledPlaylist = state.activePlaylist.toSorted(() => 0.5 - Math.random())
       else
         state.shuffledPlaylist = state.activePlaylist
+    },
+    setCatalogName(state, action: PayloadAction<string>) {
+      state.catalogName = action.payload
     },
     setCurrentTrack(state, action: PayloadAction<TrackType>) {
       state.currentTrack = action.payload
@@ -108,9 +124,15 @@ export const playlistSlice = createSlice({
       .addCase(getFavouriteTracks.rejected, (state, action) => {
         console.error("Error:", action.error.message)
       })
+      .addCase(getCatalogs.fulfilled, (state, action) => {
+        state.catalogs = action.payload
+      })
+      .addCase(getCatalogs.rejected, (state, action) => {
+        console.error("Error:", action.error.message)
+      })
   },
 })
 
-export { getFavouriteTracks }
-export const { setActivePlaylistAndTrackInside, setCurrentTrack, setIsPaused, selectPrevTrack, selectNextTrack, toggleIsShuffled, likeTrack, dislikeTrack } = playlistSlice.actions
+export { getFavouriteTracks, getCatalogs }
+export const { setActivePlaylist, setActivePlaylistAndTrackInside, setCatalogName, setIsPaused, selectPrevTrack, selectNextTrack, toggleIsShuffled, likeTrack, dislikeTrack } = playlistSlice.actions
 export const playlistReducer = playlistSlice.reducer

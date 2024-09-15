@@ -1,5 +1,5 @@
 import { UserAPI } from "@/api/users"
-import { PlaylistType } from "@/types/tracksTypes"
+import { CatalogType, PlaylistType } from "@/types/tracksTypes"
 import { TokensPair } from "@/types/usersTypes"
 import { ErrorMessage, getEmptyError } from "@/types/errorsTypes"
 
@@ -74,6 +74,16 @@ export const TracksAPI = {
       },
     })
   },
+
+  async getCatalogs() {
+    const endpoint = `${TracksAPI.uri}/catalog/selection/all/`
+
+    const data = await TracksAPI.requestToEndPoint(endpoint, null, {})
+    data.sort((lhs: CatalogType, rhs: CatalogType) => lhs._id - rhs._id)
+
+    return data
+  },
+
 
   async changeLikeTrack(trackId: number, isLiked: boolean, tokens: TokensPair) {
     const endpoint = `${this.uri}/catalog/track/${trackId}/favorite/`
