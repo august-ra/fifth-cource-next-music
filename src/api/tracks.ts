@@ -68,7 +68,7 @@ export const TracksAPI = {
   async getFavouriteTracks(tokens: TokensPair) {
     const endpoint = `${TracksAPI.uri}/catalog/track/favorite/all/`
 
-    return TracksAPI.requestToEndPoint(endpoint, tokens.refresh, {
+    return await TracksAPI.requestToEndPoint(endpoint, tokens.refresh, {
       headers: {
         Authorization: `Bearer ${tokens.access}`,
       },
@@ -78,7 +78,7 @@ export const TracksAPI = {
   async changeLikeTrack(trackId: number, isLiked: boolean, tokens: TokensPair) {
     const endpoint = `${this.uri}/catalog/track/${trackId}/favorite/`
 
-    return TracksAPI.requestToEndPoint(endpoint, tokens.refresh, {
+    return await TracksAPI.requestToEndPoint(endpoint, tokens.refresh, {
       method: isLiked ? "POST" : "DELETE",
       headers: {
         Authorization: `Bearer ${tokens.access}`,
