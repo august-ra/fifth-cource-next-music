@@ -54,3 +54,11 @@ export enum FilterKind {
   genre  = "жанру",
   year   = "году выпуска",
 }
+
+/* constants */
+
+export const catalogsImages: CatalogsImagesDetails = {
+  "Плейлист дня":      { path: "/img/playlist01.png", alt: "day's playlist" },
+  "Танцевальные хиты": { path: "/img/playlist02.png", alt: "dancing hit's playlist" },
+  "Инди-заряд":        { path: "/img/playlist03.png", alt: "indie's playlist" },
+}
