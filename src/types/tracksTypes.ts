@@ -43,7 +43,7 @@ export interface CatalogsImagesDetails {
 
 export type PlaylistType = TrackType[]
 
-export type CatalogsType = CatalogType[]
+export type CatalogsCollectionType = CatalogType[]
 
 export type CatalogsOptions = keyof CatalogsImagesDetails
 

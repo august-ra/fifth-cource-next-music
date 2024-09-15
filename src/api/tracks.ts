@@ -1,5 +1,5 @@
 import { UserAPI } from "@/api/users"
-import { CatalogType, PlaylistType } from "@/types/tracksTypes"
+import { CatalogsCollectionType, CatalogType, PlaylistType } from "@/types/tracksTypes"
 import { TokensPair } from "@/types/usersTypes"
 import { ErrorMessage, getEmptyError } from "@/types/errorsTypes"
 
@@ -75,13 +75,19 @@ export const TracksAPI = {
     })
   },
 
-  async getCatalogs() {
+  async getCatalogs(): Promise<CatalogsCollectionType> {
     const endpoint = `${TracksAPI.uri}/catalog/selection/all/`
 
     const data = await TracksAPI.requestToEndPoint(endpoint, null, {})
     data.sort((lhs: CatalogType, rhs: CatalogType) => lhs._id - rhs._id)
 
     return data
+  },
+
+  async getCatalogTracks(catalogId: string): Promise<CatalogType> {
+    const endpoint = `${TracksAPI.uri}/catalog/selection/${catalogId}/`
+
+    return await TracksAPI.requestToEndPoint(endpoint, null, {})
   },
 
 

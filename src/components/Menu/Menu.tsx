@@ -7,17 +7,22 @@ import Link from "next/link"
 import { Dispatch, SetStateAction } from "react"
 import { useQuit } from "@/hooks/useQuit"
 import { useAppDispatch, useAppSelector } from "@/store/store"
-import { setIsPaused } from "@/store/features/playlistSlice"
+import { getTracks, setCatalogName, setIsPaused } from "@/store/features/playlistSlice"
 
 
 interface Props {
-  setIsOpened: Dispatch<SetStateAction<boolean>>
+  setIsOpened: (value: boolean) => void
 }
 
 export default function Menu({ setIsOpened }: Props) {
   const dispatch = useAppDispatch()
   const user = useAppSelector((state) => state.user.user)
   const { onQuit } = useQuit()
+
+  function handleCatalogClear() {
+    dispatch(getTracks())
+    dispatch(setCatalogName(""))
+  }
 
   function handleStopPlaying() {
     dispatch(setIsPaused(true))
@@ -35,7 +40,7 @@ export default function Menu({ setIsOpened }: Props) {
     <div className={styles.menu}>
       <ul className={styles.menuList}>
         <li className={styles.menuItem}>
-          <Link className={styles.menuLink} href="/tracks/">Главное</Link>
+          <Link className={styles.menuLink} href="/tracks/" onClick={handleCatalogClear}>Главное</Link>
         </li>
 
         {

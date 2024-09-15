@@ -30,7 +30,7 @@ export default function Nav() {
       {
         isOpened
           && (
-            <Menu setIsOpened={setIsOpened} />
+            <Menu setIsOpened={(value: boolean) => setIsOpened(value)} />
           )
       }
     </nav>

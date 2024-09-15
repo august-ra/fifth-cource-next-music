@@ -15,7 +15,7 @@ import { catalogsImages, CatalogImageDetails, CatalogsOptions } from "@/types/tr
 function Sidebar() {
   useInitCatalogs()
 
-  const catalogs = useAppSelector((state) => state.playlist.catalogs)
+  const { catalogName, catalogs } = useAppSelector((state) => state.playlist)
 
   return (
     <div className={styles.sidebar}>
@@ -26,11 +26,18 @@ function Sidebar() {
           catalogs.map((catalog) => {
             const details: CatalogImageDetails = catalogsImages[catalog.name as CatalogsOptions]
 
-            return (
-              <Link key={catalog._id} href={`/tracks/catalogs/${catalog._id}`}>
-                <Image src={details.path} alt={details.alt} width={250} height={150} />
-              </Link>
-            )
+            if (catalog.name === catalogName)
+              return (
+                <div key={catalog._id}>
+                  <Image src={details.path} alt={details.alt} width={250} height={150} />
+                </div>
+              )
+            else
+              return (
+                <Link key={catalog._id} href={`/tracks/catalogs/${catalog._id}`}>
+                  <Image src={details.path} alt={details.alt} width={250} height={150} />
+                </Link>
+              )
           })
         }
       </div>
