@@ -6,7 +6,7 @@ import cn from "classnames"
 
 import React from "react"
 import { useLikeButton } from "@/hooks/useLikeButton"
-import { TrackType } from "@/types"
+import { TrackType } from "@/types/tracksTypes"
 
 
 interface Props {

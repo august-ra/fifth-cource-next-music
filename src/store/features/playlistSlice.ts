@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
 
 import { TracksAPI } from "@/api/tracks"
-import { PlaylistType, TrackType } from "@/types"
+import { PlaylistType, TrackType } from "@/types/tracksTypes"
 
 
 const getFavouriteTracks = createAsyncThunk("playlist/getFavouriteTracks", TracksAPI.getFavouriteTracks)

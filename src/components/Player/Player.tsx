@@ -5,7 +5,7 @@ import cn from "classnames"
 import ActiveTrack from "@components/ActiveTrack/ActiveTrack"
 
 import { useAppSelector } from "@/store/store"
-import { TrackType } from "@/types"
+import { TrackType } from "@/types/tracksTypes"
 
 
 interface Props {

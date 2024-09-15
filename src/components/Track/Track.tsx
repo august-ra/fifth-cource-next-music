@@ -7,7 +7,7 @@ import cn from "classnames"
 import { useAppDispatch, useAppSelector } from "@/store/store"
 import { setActivePlaylistAndTrackInside } from "@/store/features/playlistSlice"
 import { useLikeButton } from "@/hooks/useLikeButton"
-import { PlaylistType, TrackType } from "@/types"
+import { PlaylistType, TrackType } from "@/types/tracksTypes"
 import { printTime } from "@/utils/datetime"
 
 

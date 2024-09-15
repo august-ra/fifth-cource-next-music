@@ -8,14 +8,15 @@ import { useRouter } from "next/navigation"
 import { useAppDispatch, useAppSelector } from "@/store/store"
 import { getTokens, publicError, signUp } from "@/store/features/userSlice"
 import { UserAPI } from "@/api/users"
-import { CreatedUserFormData, isError } from "@/types"
+import { UserFormData } from "@/types/usersTypes"
+import { isError } from "@/types/errorsTypes"
 
 
 export default function LoginPage() {
   const router = useRouter()
   const errorMsg = useAppSelector((state) => state.user.errorMsg)
   const dispatch = useAppDispatch()
-  const [formData, setFormData] = useState<CreatedUserFormData>({
+  const [formData, setFormData] = useState<UserFormData>({
     email:    "",
     password: "",
     username: "",

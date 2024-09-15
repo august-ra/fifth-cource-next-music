@@ -5,7 +5,7 @@ import styles from "./Filter.module.css"
 import FilterButton from "./FilterButton/FilterButton"
 
 import { useState } from "react"
-import { FilterKind, PlaylistType } from "@/types"
+import { FilterKind, PlaylistType } from "@/types/tracksTypes"
 
 
 const filterKind: string[] = [

@@ -2,7 +2,7 @@ import React from "react"
 import { useAppDispatch, useAppSelector } from "@/store/store"
 import { dislikeTrack, likeTrack } from "@/store/features/playlistSlice"
 import { TracksAPI } from "@/api/tracks"
-import { TrackType } from "@/types"
+import { TrackType } from "@/types/tracksTypes"
 
 
 interface HookResult {

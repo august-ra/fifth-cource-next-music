@@ -1,4 +1,5 @@
-import { CreatedUserFormData, getEmptyError, UserFormData } from "@/types"
+import { UserFormData } from "@/types/usersTypes"
+import { getEmptyError } from "@/types/errorsTypes"
 
 
 export const UserAPI = {
@@ -34,7 +35,7 @@ export const UserAPI = {
     })
   },
 
-  async signUp(userData: CreatedUserFormData) {
+  async signUp(userData: UserFormData) {
     return UserAPI.requestToEndPoint(`${UserAPI.uri}/user/signup/`, {
       method: "POST",
       headers: {
