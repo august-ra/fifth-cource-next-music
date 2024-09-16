@@ -3,6 +3,7 @@
 import styles from "./Nav.module.css"
 
 import Image from "next/image"
+import Link from "next/link"
 import Menu from "@components/Menu/Menu"
 
 import { useState } from "react"
@@ -17,9 +18,9 @@ export default function Nav() {
 
   return (
     <nav className={styles.nav}>
-      <div className={styles.logo}>
+      <Link className={styles.logo} href="/tracks/">
         <Image className={styles.logoImage} src="/img/logo.svg" alt="SkyPro Logo" width={114} height={17} />
-      </div>
+      </Link>
 
       <div className={styles.burger} onClick={handleOpen}>
         <span className={styles.burgerLine} />
