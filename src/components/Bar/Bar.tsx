@@ -23,17 +23,6 @@ export default function Bar() {
   const currentAudio = audioRef?.current
 
   useEffect(() => {
-    if (!audioRef || !audioRef?.current || isLooped)
-      return
-
-    const currentAudio = audioRef.current
-
-    currentAudio.addEventListener("ended", goNextTrack)
-
-    return () => currentAudio.removeEventListener("ended", goNextTrack)
-  }, [])
-
-  useEffect(() => {
     if (!currentTrack || !currentAudio)
       return
 
@@ -81,7 +70,8 @@ export default function Bar() {
   }
 
   function goNextTrack() {
-    dispatch(selectNextTrack(true))
+    if (!isLooped)
+      dispatch(selectNextTrack(true))
   }
 
   function handleNextTrack() {
@@ -95,7 +85,8 @@ export default function Bar() {
   return (
     <div className={styles.bar}>
       <div className={styles.barContent}>
-        <audio className={styles.barAudio} src={currentTrack?.track_file} ref={audioRef} onTimeUpdate={handleTimeUpdate} />
+        <audio className={styles.barAudio} src={currentTrack?.track_file}
+               ref={audioRef} onTimeUpdate={handleTimeUpdate} onEnded={goNextTrack} />
 
         <ProgressBar max={currentAudio?.duration || 0} position={position} handleSeek={handleSeek} />
 
