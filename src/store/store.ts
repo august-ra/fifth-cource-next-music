@@ -4,17 +4,20 @@ import { playlistReducer } from "@/store/features/playlistSlice"
 import { userReducer } from "@/store/features/userSlice"
 
 
-export function makeStore() {
+const rootReducer = combineReducers({
+  playlist: playlistReducer,
+  user:     userReducer,
+})
+
+export function makeStore(preloadedState?: Partial<RootState>) {
   return configureStore({
-    reducer: combineReducers({
-      playlist: playlistReducer,
-      user:     userReducer,
-    }),
+    reducer: rootReducer,
+    preloadedState,
   })
 }
 
+export type RootState = ReturnType<typeof rootReducer>
 export type AppStore = ReturnType<typeof makeStore>
-export type RootState = ReturnType<AppStore["getState"]>
 export type AppDispatch = AppStore["dispatch"]
 
 export const useAppDispatch: () => AppDispatch = useDispatch

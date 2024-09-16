@@ -4,7 +4,6 @@ import styles from "./Menu.module.css"
 
 import Link from "next/link"
 
-import { Dispatch, SetStateAction } from "react"
 import { useQuit } from "@/hooks/useQuit"
 import { useAppDispatch, useAppSelector } from "@/store/store"
 import { getTracks, setCatalogName, setIsPaused } from "@/store/features/playlistSlice"
@@ -47,7 +46,7 @@ export default function Menu({ setIsOpened }: Props) {
           user && user.username
             && (
               <li className={styles.menuItem}>
-                <Link className={styles.menuLink} href="/tracks/favourite">Мой плейлист</Link>
+                <Link className={styles.menuLink} href="/tracks/favourite">Любимые треки</Link>
               </li>
             )
         }

@@ -1,11 +1,12 @@
 "use client"
 
+import { usePathname } from "next/navigation"
+import { useSafeRouter } from "@/hooks/useSafeRouter"
 import { useAppDispatch } from "@/store/store"
 import { signOut } from "@/store/features/userSlice"
-import { usePathname, useRouter } from "next/navigation"
 
 export function useQuit() {
-  const router = useRouter()
+  const router   = useSafeRouter()
   const pathname = usePathname()
   const dispatch = useAppDispatch()
 
