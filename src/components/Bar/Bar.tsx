@@ -35,7 +35,6 @@ export default function Bar() {
 
   useEffect(() => {
     if (currentAudio) {
-      console.log(isLooped)
       audioRef.current.loop = isLooped
     }
   }, [isLooped])

@@ -33,6 +33,12 @@ function renderSidebarPersonal(username: string) {
 }
 
 describe("SidebarPersonal Component", () => {
+  it("renders correctly without user", () => {
+    renderWithProviders(<SidebarPersonal />)
+
+    const elements = screen.queryAllByRole("paragraph")
+    expect(elements.length).toEqual(0)
+  })
   it("renders correctly with user", () => {
     const name = "John Connor"
 
