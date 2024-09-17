@@ -4,7 +4,8 @@ import Filter from "@components/Filter/Filter"
 import Playlist from "@components/Playlist/Playlist"
 
 import { TracksAPI } from "@/api/tracks"
-import { ErrorMessage, isError, PlaylistType } from "@/types"
+import { PlaylistType } from "@/types/tracksTypes"
+import { ErrorMessage, isError } from "@/types/errorsTypes"
 
 
 export default async function Home() {

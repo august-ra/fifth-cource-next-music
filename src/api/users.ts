@@ -1,4 +1,5 @@
-import { CreatedUserFormData, getEmptyError, UserFormData } from "@/types"
+import { UserFormData } from "@/types/usersTypes"
+import { getEmptyError } from "@/types/errorsTypes"
 
 
 export const UserAPI = {
@@ -25,7 +26,7 @@ export const UserAPI = {
 
 
   async signIn(userData: UserFormData) {
-    return UserAPI.requestToEndPoint(`${UserAPI.uri}/user/login/`, {
+    return await UserAPI.requestToEndPoint(`${UserAPI.uri}/user/login/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -34,8 +35,8 @@ export const UserAPI = {
     })
   },
 
-  async signUp(userData: CreatedUserFormData) {
-    return UserAPI.requestToEndPoint(`${UserAPI.uri}/user/signup/`, {
+  async signUp(userData: UserFormData) {
+    return await UserAPI.requestToEndPoint(`${UserAPI.uri}/user/signup/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -45,7 +46,7 @@ export const UserAPI = {
   },
 
   async getTokens(userData: UserFormData) {
-    return UserAPI.requestToEndPoint(`${UserAPI.uri}/user/token/`, {
+    return await UserAPI.requestToEndPoint(`${UserAPI.uri}/user/token/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -55,7 +56,7 @@ export const UserAPI = {
   },
 
   async refreshTokens(token: string) {
-    return UserAPI.requestToEndPoint(`${UserAPI.uri}/user/token/refresh/`, {
+    return await UserAPI.requestToEndPoint(`${UserAPI.uri}/user/token/refresh/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

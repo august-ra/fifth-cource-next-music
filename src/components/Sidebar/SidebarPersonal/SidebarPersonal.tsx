@@ -2,7 +2,7 @@
 
 import styles from "../Sidebar.module.css"
 
-import { useRouter } from "next/navigation"
+import { useSafeRouter } from "@/hooks/useSafeRouter"
 import { useInitFavouriteTracks } from "@/hooks/useInitFavouriteTracks"
 import { useQuit } from "@/hooks/useQuit"
 import { useAppDispatch, useAppSelector } from "@/store/store"
@@ -12,7 +12,7 @@ import { setIsPaused } from "@/store/features/playlistSlice"
 export default function SidebarPersonal() {
   useInitFavouriteTracks()
 
-  const router   = useRouter()
+  const router   = useSafeRouter()
   const dispatch = useAppDispatch()
   const user     = useAppSelector((state) => state.user.user)
   const { onQuit } = useQuit()

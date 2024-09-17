@@ -1,6 +1,7 @@
-import { TokenState } from "@/store/features/userSlice"
 import { UserAPI } from "@/api/users"
-import { ErrorMessage, getEmptyError, PlaylistType } from "@/types"
+import { CatalogsCollectionType, CatalogType, PlaylistType } from "@/types/tracksTypes"
+import { TokensPair } from "@/types/usersTypes"
+import { ErrorMessage, getEmptyError } from "@/types/errorsTypes"
 
 
 export const TracksAPI = {
@@ -64,20 +65,36 @@ export const TracksAPI = {
   },
 
 
-  async getFavouriteTracks(tokens: TokenState) {
+  async getFavouriteTracks(tokens: TokensPair) {
     const endpoint = `${TracksAPI.uri}/catalog/track/favorite/all/`
 
-    return TracksAPI.requestToEndPoint(endpoint, tokens.refresh, {
+    return await TracksAPI.requestToEndPoint(endpoint, tokens.refresh, {
       headers: {
         Authorization: `Bearer ${tokens.access}`,
       },
     })
   },
 
-  async changeLikeTrack(trackId: number, isLiked: boolean, tokens: TokenState) {
+  async getCatalogs(): Promise<CatalogsCollectionType> {
+    const endpoint = `${TracksAPI.uri}/catalog/selection/all/`
+
+    const data = await TracksAPI.requestToEndPoint(endpoint, null, {})
+    data.sort((lhs: CatalogType, rhs: CatalogType) => lhs._id - rhs._id)
+
+    return data
+  },
+
+  async getCatalogTracks(catalogId: string): Promise<CatalogType> {
+    const endpoint = `${TracksAPI.uri}/catalog/selection/${catalogId}/`
+
+    return await TracksAPI.requestToEndPoint(endpoint, null, {})
+  },
+
+
+  async changeLikeTrack(trackId: number, isLiked: boolean, tokens: TokensPair) {
     const endpoint = `${this.uri}/catalog/track/${trackId}/favorite/`
 
-    return TracksAPI.requestToEndPoint(endpoint, tokens.refresh, {
+    return await TracksAPI.requestToEndPoint(endpoint, tokens.refresh, {
       method: isLiked ? "POST" : "DELETE",
       headers: {
         Authorization: `Bearer ${tokens.access}`,

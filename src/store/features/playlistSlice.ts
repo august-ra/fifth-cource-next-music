@@ -1,16 +1,21 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
 
 import { TracksAPI } from "@/api/tracks"
-import { PlaylistType, TrackType } from "@/types"
+import { CatalogsCollectionType, PlaylistType, TrackType } from "@/types/tracksTypes"
+import { isError } from "@/types/errorsTypes"
 
 
+const getTracks          = createAsyncThunk("playlist/getTracks",          TracksAPI.getTracks)
 const getFavouriteTracks = createAsyncThunk("playlist/getFavouriteTracks", TracksAPI.getFavouriteTracks)
+const getCatalogs        = createAsyncThunk("playlist/getCatalogs",        TracksAPI.getCatalogs)
 
 
 interface PlaylistState {
   activePlaylist:   PlaylistType
   shuffledPlaylist: PlaylistType
   favouriteTracks:  PlaylistType
+  catalogs:         CatalogsCollectionType
+  catalogName:      string
   currentTrack:     TrackType | null
   isPaused:         boolean
   isShuffled:       boolean
@@ -25,6 +30,8 @@ const initialState: PlaylistState = {
   activePlaylist:   [],
   shuffledPlaylist: [],
   favouriteTracks:  [],
+  catalogs:         [],
+  catalogName:      "",
   currentTrack:     null,
   isPaused:         true,
   isShuffled:       false,
@@ -52,6 +59,9 @@ export const playlistSlice = createSlice({
   name: "playlist",
   initialState,
   reducers: {
+    setActivePlaylist(state, action: PayloadAction<PlaylistType>) {
+      state.activePlaylist = action.payload
+    },
     setActivePlaylistAndTrackInside(state, action: PayloadAction<PlaylistInfo>) {
       state.activePlaylist = action.payload.playlist
       state.currentTrack   = action.payload.track
@@ -60,6 +70,9 @@ export const playlistSlice = createSlice({
         state.shuffledPlaylist = state.activePlaylist.toSorted(() => 0.5 - Math.random())
       else
         state.shuffledPlaylist = state.activePlaylist
+    },
+    setCatalogName(state, action: PayloadAction<string>) {
+      state.catalogName = action.payload
     },
     setCurrentTrack(state, action: PayloadAction<TrackType>) {
       state.currentTrack = action.payload
@@ -102,15 +115,28 @@ export const playlistSlice = createSlice({
   },
   extraReducers(builder) {
     builder
+      .addCase(getTracks.fulfilled, (state, action) => {
+        if (!isError(action.payload))
+          state.activePlaylist = action.payload
+      })
+      .addCase(getTracks.rejected, (state, action) => {
+        console.error("Error:", action.error.message)
+      })
       .addCase(getFavouriteTracks.fulfilled, (state, action) => {
         state.favouriteTracks = action.payload
       })
       .addCase(getFavouriteTracks.rejected, (state, action) => {
         console.error("Error:", action.error.message)
       })
+      .addCase(getCatalogs.fulfilled, (state, action) => {
+        state.catalogs = action.payload
+      })
+      .addCase(getCatalogs.rejected, (state, action) => {
+        console.error("Error:", action.error.message)
+      })
   },
 })
 
-export { getFavouriteTracks }
-export const { setActivePlaylistAndTrackInside, setCurrentTrack, setIsPaused, selectPrevTrack, selectNextTrack, toggleIsShuffled, likeTrack, dislikeTrack } = playlistSlice.actions
+export { getTracks, getFavouriteTracks, getCatalogs }
+export const { setActivePlaylist, setActivePlaylistAndTrackInside, setCatalogName, setIsPaused, selectPrevTrack, selectNextTrack, toggleIsShuffled, likeTrack, dislikeTrack } = playlistSlice.actions
 export const playlistReducer = playlistSlice.reducer

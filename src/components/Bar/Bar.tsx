@@ -23,18 +23,7 @@ export default function Bar() {
   const currentAudio = audioRef?.current
 
   useEffect(() => {
-    if (!audioRef || !audioRef?.current || isLooped)
-      return
-
-    const currentAudio = audioRef.current
-
-    currentAudio.addEventListener("ended", goNextTrack)
-
-    return () => currentAudio.removeEventListener("ended", goNextTrack)
-  }, [])
-
-  useEffect(() => {
-    if (!currentAudio)
+    if (!currentTrack || !currentAudio)
       return
 
     dispatch(setIsPaused(false))
@@ -46,7 +35,6 @@ export default function Bar() {
 
   useEffect(() => {
     if (currentAudio) {
-      console.log(isLooped)
       audioRef.current.loop = isLooped
     }
   }, [isLooped])
@@ -67,7 +55,7 @@ export default function Bar() {
     setIsLooped((prev) => !prev)
   }
 
-  function toggleShufled() {
+  function toggleShuffled() {
     dispatch(toggleIsShuffled())
   }
 
@@ -81,7 +69,8 @@ export default function Bar() {
   }
 
   function goNextTrack() {
-    dispatch(selectNextTrack(true))
+    if (!isLooped)
+      dispatch(selectNextTrack(true))
   }
 
   function handleNextTrack() {
@@ -95,14 +84,15 @@ export default function Bar() {
   return (
     <div className={styles.bar}>
       <div className={styles.barContent}>
-        <audio className={styles.barAudio} src={currentTrack?.track_file} ref={audioRef} onTimeUpdate={handleTimeUpdate} />
+        <audio className={styles.barAudio} src={currentTrack?.track_file}
+               ref={audioRef} onTimeUpdate={handleTimeUpdate} onEnded={goNextTrack} />
 
         <ProgressBar max={currentAudio?.duration || 0} position={position} handleSeek={handleSeek} />
 
         <div className={styles.barPlayer}>
           <Player currentTrack={currentTrack ?? getEmptyTrack()} isLooped={isLooped}
                   handlePrev={handlePrevTrack} handleNext={handleNextTrack}
-                  togglePlay={togglePlay} toggleLoop={toggleLoop} toggleShuffle={toggleShufled} />
+                  togglePlay={togglePlay} toggleLoop={toggleLoop} toggleShuffle={toggleShuffled} />
 
           <Volume audioRef={audioRef} />
 

@@ -1,6 +1,6 @@
 import styles from "./ErrorBlock.module.css"
 
-import { ErrorMessage } from "@/types"
+import { ErrorMessage } from "@/types/errorsTypes"
 
 
 interface Props {

@@ -8,7 +8,8 @@ import { useRouter } from "next/navigation"
 import { useAppDispatch, useAppSelector } from "@/store/store"
 import { getTokens, publicError, signIn } from "@/store/features/userSlice"
 import { UserAPI } from "@/api/users"
-import { isError, UserFormData } from "@/types"
+import { UserFormData } from "@/types/usersTypes"
+import { isError } from "@/types/errorsTypes"
 
 
 export default function LoginPage() {
@@ -18,6 +19,7 @@ export default function LoginPage() {
   const [formData, setFormData] = useState<UserFormData>({
     email:    "",
     password: "",
+    username: "unknown",
   })
 
   function handleChangeFormData(event: React.ChangeEvent<HTMLInputElement>) {
