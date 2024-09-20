@@ -5,12 +5,12 @@ import { CatalogsCollectionType, PlaylistType, TrackType } from "@/types/tracksT
 import { isError } from "@/types/errorsTypes"
 
 
-const getTracks          = createAsyncThunk("playlist/getTracks",          TracksAPI.getTracks)
-const getFavouriteTracks = createAsyncThunk("playlist/getFavouriteTracks", TracksAPI.getFavouriteTracks)
-const getCatalogs        = createAsyncThunk("playlist/getCatalogs",        TracksAPI.getCatalogs)
+const getTracks          = createAsyncThunk("player/getTracks",          TracksAPI.getTracks)
+const getFavouriteTracks = createAsyncThunk("player/getFavouriteTracks", TracksAPI.getFavouriteTracks)
+const getCatalogs        = createAsyncThunk("player/getCatalogs",        TracksAPI.getCatalogs)
 
 
-interface PlaylistState {
+interface PlayerState {
   activePlaylist:   PlaylistType
   shuffledPlaylist: PlaylistType
   favouriteTracks:  PlaylistType
@@ -21,12 +21,12 @@ interface PlaylistState {
   isShuffled:       boolean
 }
 
-interface PlaylistInfo {
+interface PlayerInfo {
   playlist: PlaylistType
   track:    TrackType
 }
 
-const initialState: PlaylistState = {
+const initialState: PlayerState = {
   activePlaylist:   [],
   shuffledPlaylist: [],
   favouriteTracks:  [],
@@ -55,14 +55,14 @@ export function getEmptyTrack(): TrackType {
   }
 }
 
-export const playlistSlice = createSlice({
-  name: "playlist",
+export const playerSlice = createSlice({
+  name: "player",
   initialState,
   reducers: {
     setActivePlaylist(state, action: PayloadAction<PlaylistType>) {
       state.activePlaylist = action.payload
     },
-    setActivePlaylistAndTrackInside(state, action: PayloadAction<PlaylistInfo>) {
+    setActivePlaylistAndTrackInside(state, action: PayloadAction<PlayerInfo>) {
       state.activePlaylist = action.payload.playlist
       state.currentTrack   = action.payload.track
 
@@ -138,5 +138,5 @@ export const playlistSlice = createSlice({
 })
 
 export { getTracks, getFavouriteTracks, getCatalogs }
-export const { setActivePlaylist, setActivePlaylistAndTrackInside, setCatalogName, setIsPaused, selectPrevTrack, selectNextTrack, toggleIsShuffled, likeTrack, dislikeTrack } = playlistSlice.actions
-export const playlistReducer = playlistSlice.reducer
+export const { setActivePlaylist, setActivePlaylistAndTrackInside, setCurrentTrack, setCatalogName, setIsPaused, selectPrevTrack, selectNextTrack, toggleIsShuffled, likeTrack, dislikeTrack } = playerSlice.actions
+export const playerReducer = playerSlice.reducer

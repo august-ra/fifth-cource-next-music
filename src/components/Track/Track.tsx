@@ -5,7 +5,7 @@ import shared from "@/components/SharedButtons/SharedButtons.module.css"
 import cn from "classnames"
 
 import { useAppDispatch, useAppSelector } from "@/store/store"
-import { setActivePlaylistAndTrackInside } from "@/store/features/playlistSlice"
+import { setActivePlaylistAndTrackInside } from "@/store/features/playerSlice"
 import { useLikeButton } from "@/hooks/useLikeButton"
 import { PlaylistType, TrackType } from "@/types/tracksTypes"
 import { printTime } from "@/utils/datetime"
@@ -18,7 +18,7 @@ interface Props {
 
 export default function Track({ playlist, track }: Props) {
   const dispatch = useAppDispatch()
-  const { currentTrack, isPaused } = useAppSelector((state) => state.playlist)
+  const { currentTrack, isPaused } = useAppSelector((state) => state.player)
   const { isLiked, onLike } = useLikeButton(track)
 
   function handleTrackClick() {

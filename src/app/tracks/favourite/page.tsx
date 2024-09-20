@@ -9,7 +9,7 @@ import { useAppSelector } from "@/store/store"
 
 
 export default function Home() {
-  const favouriteTracks = useAppSelector((state) => state.playlist.favouriteTracks)
+  const favouriteTracks = useAppSelector((state) => state.player.favouriteTracks)
 
   return (
     <>

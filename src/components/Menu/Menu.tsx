@@ -6,7 +6,7 @@ import Link from "next/link"
 
 import { useQuit } from "@/hooks/useQuit"
 import { useAppDispatch, useAppSelector } from "@/store/store"
-import { getTracks, setCatalogName, setIsPaused } from "@/store/features/playlistSlice"
+import { getTracks, setCatalogName, setIsPaused } from "@/store/features/playerSlice"
 
 
 interface Props {

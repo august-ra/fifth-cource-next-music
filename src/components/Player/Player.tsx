@@ -19,7 +19,7 @@ interface Props {
 }
 
 export default function Player({ currentTrack, isLooped, togglePlay, toggleLoop, toggleShuffle, handlePrev, handleNext }: Props) {
-  const { isPaused, isShuffled } = useAppSelector((state) => state.playlist)
+  const { isPaused, isShuffled } = useAppSelector((state) => state.player)
   const state = isPaused ? "play" : "pause"
 
   return (

@@ -7,7 +7,7 @@ import Playlist from "@components/Playlist/Playlist"
 
 import { useEffect } from "react"
 import { useAppDispatch, useAppSelector } from "@/store/store"
-import { setActivePlaylist, setCatalogName } from "@/store/features/playlistSlice"
+import { setActivePlaylist, setCatalogName } from "@/store/features/playerSlice"
 import { TracksAPI } from "@/api/tracks"
 import { isError } from "@/types/errorsTypes"
 
@@ -20,7 +20,7 @@ interface Props {
 
 export default function Catalog({ params }: Props) {
   const dispatch = useAppDispatch()
-  const { activePlaylist, catalogName } = useAppSelector((state) => state.playlist)
+  const { activePlaylist, catalogName } = useAppSelector((state) => state.player)
 
   useEffect(() => {
     Promise.all([TracksAPI.getTracks(), TracksAPI.getCatalogTracks(params.id)])

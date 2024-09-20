@@ -1,12 +1,12 @@
 import { TypedUseSelectorHook, useDispatch, useSelector, useStore } from "react-redux"
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
-import { playlistReducer } from "@/store/features/playlistSlice"
+import { playerReducer } from "@/store/features/playerSlice"
 import { userReducer } from "@/store/features/userSlice"
 
 
 const rootReducer = combineReducers({
-  playlist: playlistReducer,
-  user:     userReducer,
+  player: playerReducer,
+  user:   userReducer,
 })
 
 export function makeStore(preloadedState?: Partial<RootState>) {

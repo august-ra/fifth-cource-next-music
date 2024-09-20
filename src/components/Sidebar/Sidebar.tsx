@@ -15,7 +15,7 @@ import { catalogsImages, CatalogImageDetails, CatalogsOptions } from "@/types/tr
 function Sidebar() {
   useInitCatalogs()
 
-  const { catalogName, catalogs } = useAppSelector((state) => state.playlist)
+  const { catalogName, catalogs } = useAppSelector((state) => state.player)
 
   return (
     <div className={styles.sidebar}>

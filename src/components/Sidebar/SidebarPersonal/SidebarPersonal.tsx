@@ -6,7 +6,7 @@ import { useSafeRouter } from "@/hooks/useSafeRouter"
 import { useInitFavouriteTracks } from "@/hooks/useInitFavouriteTracks"
 import { useQuit } from "@/hooks/useQuit"
 import { useAppDispatch, useAppSelector } from "@/store/store"
-import { setIsPaused } from "@/store/features/playlistSlice"
+import { setIsPaused } from "@/store/features/playerSlice"
 
 
 export default function SidebarPersonal() {
