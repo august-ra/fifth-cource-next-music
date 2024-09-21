@@ -7,7 +7,7 @@ import Playlist from "@components/Playlist/Playlist"
 
 import { useEffect } from "react"
 import { useAppDispatch, useAppSelector } from "@/store/store"
-import { setActivePlaylist, setCatalogName } from "@/store/features/playerSlice"
+import { setPlaylist, setCatalogName } from "@/store/features/playerSlice"
 import { TracksAPI } from "@/api/tracks"
 import { isError } from "@/types/errorsTypes"
 
@@ -20,7 +20,7 @@ interface Props {
 
 export default function Catalog({ params }: Props) {
   const dispatch = useAppDispatch()
-  const { activePlaylist, catalogName } = useAppSelector((state) => state.player)
+  const { playlists, catalogName } = useAppSelector((state) => state.player)
 
   useEffect(() => {
     Promise.all([TracksAPI.getTracks(), TracksAPI.getCatalogTracks(params.id)])
@@ -30,7 +30,8 @@ export default function Catalog({ params }: Props) {
 
         const tracks = responseTracks.filter((track) => responseCategory.items.includes(track._id))
 
-        dispatch(setActivePlaylist(tracks))
+        dispatch(setPlaylist({ kind: "initial", playlist: responseTracks }))
+        dispatch(setPlaylist({ kind: "visible", playlist: tracks }))
         dispatch(setCatalogName(responseCategory.name))
       })
   }, [])
@@ -38,8 +39,8 @@ export default function Catalog({ params }: Props) {
   return (
     <>
       <h2 className={styles.mainTitle}>{catalogName}</h2>
-      <Filter playlist={activePlaylist} />
-      <Playlist playlist={activePlaylist} errorMsg={null} />
+      <Filter playlist={playlists.filtered} />
+      <Playlist playlist={playlists.filtered} errorMsg={null} />
     </>
   )
 }

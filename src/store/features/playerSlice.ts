@@ -11,9 +11,15 @@ const getCatalogs        = createAsyncThunk("player/getCatalogs",        TracksA
 
 
 interface PlayerState {
-  activePlaylist:   PlaylistType
-  shuffledPlaylist: PlaylistType
-  favouriteTracks:  PlaylistType
+  playlists: {
+    empty:     PlaylistType
+    initial:   PlaylistType // full
+    favourite: PlaylistType
+    active:    PlaylistType // playing
+    shuffled:  PlaylistType
+    visible:   PlaylistType // shown
+    filtered:  PlaylistType
+  }
   catalogs:         CatalogsCollectionType
   catalogName:      string
   currentTrack:     TrackType | null
@@ -26,15 +32,26 @@ interface PlayerInfo {
   track:    TrackType
 }
 
+interface PlaylistInfo {
+  kind:     keyof PlayerState['playlists']
+  playlist: PlaylistType
+}
+
 const initialState: PlayerState = {
-  activePlaylist:   [],
-  shuffledPlaylist: [],
-  favouriteTracks:  [],
-  catalogs:         [],
-  catalogName:      "",
-  currentTrack:     null,
-  isPaused:         true,
-  isShuffled:       false,
+  playlists: {
+    empty:     [],
+    initial:   [],
+    favourite: [],
+    active:    [],
+    shuffled:  [],
+    visible:   [],
+    filtered:  [],
+  },
+  catalogs:     [],
+  catalogName:  "",
+  currentTrack: null,
+  isPaused:     true,
+  isShuffled:   false,
 }
 
 export function getEmptyTrack(): TrackType {
@@ -59,34 +76,40 @@ export const playerSlice = createSlice({
   name: "player",
   initialState,
   reducers: {
-    setActivePlaylist(state, action: PayloadAction<PlaylistType>) {
-      state.activePlaylist = action.payload
+    setPlaylist(state, action: PayloadAction<PlaylistInfo>) {
+      state.playlists[action.payload.kind] = action.payload.playlist ?? state.playlists.empty
+
+      if (action.payload.kind === "active") {
+        if (state.isShuffled)
+          state.playlists.shuffled = state.playlists.active.toSorted(() => 0.5 - Math.random())
+        else
+          state.playlists.shuffled = state.playlists.active
+      } else if (action.payload.kind === "visible") {
+        state.playlists.filtered = state.playlists.visible
+      }
     },
     setActivePlaylistAndTrackInside(state, action: PayloadAction<PlayerInfo>) {
-      state.activePlaylist = action.payload.playlist
-      state.currentTrack   = action.payload.track
+      state.playlists.active = action.payload.playlist
+      state.currentTrack     = action.payload.track
 
       if (state.isShuffled)
-        state.shuffledPlaylist = state.activePlaylist.toSorted(() => 0.5 - Math.random())
+        state.playlists.shuffled = state.playlists.active.toSorted(() => 0.5 - Math.random())
       else
-        state.shuffledPlaylist = state.activePlaylist
+        state.playlists.shuffled = state.playlists.active
     },
     setCatalogName(state, action: PayloadAction<string>) {
       state.catalogName = action.payload
     },
-    setCurrentTrack(state, action: PayloadAction<TrackType>) {
-      state.currentTrack = action.payload
-    },
     selectPrevTrack(state) {
-      const index = state.shuffledPlaylist.findIndex((track) => track._id === state.currentTrack?._id)
-      const track = state.shuffledPlaylist[index - 1]
+      const index = state.playlists.shuffled.findIndex((track) => track._id === state.currentTrack?._id)
+      const track = state.playlists.shuffled[index - 1]
 
       if (track)
         state.currentTrack = track
     },
     selectNextTrack(state, action: PayloadAction<boolean>) {
-      const index = state.shuffledPlaylist.findIndex((track) => track._id === state.currentTrack?._id)
-      const track = state.shuffledPlaylist[index + 1]
+      const index = state.playlists.shuffled.findIndex((track) => track._id === state.currentTrack?._id)
+      const track = state.playlists.shuffled[index + 1]
 
       if (track)
         state.currentTrack = track
@@ -102,28 +125,28 @@ export const playerSlice = createSlice({
       state.isShuffled = !state.isShuffled
 
       if (state.isShuffled)
-        state.shuffledPlaylist = state.activePlaylist.toSorted(() => 0.5 - Math.random())
+        state.playlists.shuffled = state.playlists.active.toSorted(() => 0.5 - Math.random())
       else
-        state.shuffledPlaylist = state.activePlaylist
+        state.playlists.shuffled = state.playlists.active
     },
     likeTrack(state, action: PayloadAction<TrackType>) {
-      state.favouriteTracks.push(action.payload)
+      state.playlists.favourite.push(action.payload)
     },
     dislikeTrack(state, action: PayloadAction<TrackType>) {
-      state.favouriteTracks = state.favouriteTracks.filter((track) => track._id !== action.payload._id)
+      state.playlists.favourite = state.playlists.favourite.filter((track) => track._id !== action.payload._id)
     },
   },
   extraReducers(builder) {
     builder
       .addCase(getTracks.fulfilled, (state, action) => {
         if (!isError(action.payload))
-          state.activePlaylist = action.payload
+          state.playlists.initial = action.payload
       })
       .addCase(getTracks.rejected, (state, action) => {
         console.error("Error:", action.error.message)
       })
       .addCase(getFavouriteTracks.fulfilled, (state, action) => {
-        state.favouriteTracks = action.payload
+        state.playlists.favourite = action.payload
       })
       .addCase(getFavouriteTracks.rejected, (state, action) => {
         console.error("Error:", action.error.message)
@@ -138,5 +161,5 @@ export const playerSlice = createSlice({
 })
 
 export { getTracks, getFavouriteTracks, getCatalogs }
-export const { setActivePlaylist, setActivePlaylistAndTrackInside, setCurrentTrack, setCatalogName, setIsPaused, selectPrevTrack, selectNextTrack, toggleIsShuffled, likeTrack, dislikeTrack } = playerSlice.actions
+export const { setPlaylist, setActivePlaylistAndTrackInside, setCatalogName, setIsPaused, selectPrevTrack, selectNextTrack, toggleIsShuffled, likeTrack, dislikeTrack } = playerSlice.actions
 export const playerReducer = playerSlice.reducer

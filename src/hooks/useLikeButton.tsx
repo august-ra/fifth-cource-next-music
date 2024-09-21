@@ -13,7 +13,7 @@ interface HookResult {
 export function useLikeButton(currentTrack: TrackType): HookResult {
   const dispatch        = useAppDispatch()
   const tokens          = useAppSelector((state) => state.user.tokens)
-  const favouriteTracks = useAppSelector((state) => state.player.favouriteTracks)
+  const favouriteTracks = useAppSelector((state) => state.player.playlists.favourite)
 
   const isLiked: boolean = Boolean(tokens.access && favouriteTracks.find((track) => track._id === currentTrack._id))
 
