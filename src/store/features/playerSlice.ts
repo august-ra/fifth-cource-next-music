@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
+import { WritableDraft } from "immer"
 
 import { TracksAPI } from "@/api/tracks"
 import { CatalogsCollectionType, PlaylistType, TrackType } from "@/types/tracksTypes"
@@ -14,19 +15,23 @@ const getCatalogs        = createAsyncThunk("player/getCatalogs",        TracksA
 
 interface PlayerState {
   playlists: {
-    empty:     PlaylistType
-    initial:   PlaylistType // full
-    favourite: PlaylistType
-    active:    PlaylistType // playing
-    shuffled:  PlaylistType
-    visible:   PlaylistType // shown
-    filtered:  PlaylistType
+    empty:      PlaylistType
+    initial:    PlaylistType // full
+    favourite:  PlaylistType
+    active:     PlaylistType // playing
+    shuffled:   PlaylistType
+    visible:    PlaylistType // shown
+    filtered:   PlaylistType
   }
-  catalogs:         CatalogsCollectionType
-  catalogName:      string
-  currentTrack:     TrackType | null
-  isPaused:         boolean
-  isShuffled:       boolean
+  catalogs:     CatalogsCollectionType
+  catalogName:  string
+  filters: {
+    authors:    string[]
+    genres:     string[]
+  }
+  currentTrack: TrackType | null
+  isPaused:     boolean
+  isShuffled:   boolean
 }
 
 interface PlayerInfo {
@@ -39,21 +44,31 @@ interface PlaylistInfo {
   playlist: PlaylistType
 }
 
+interface PlayerFilterInfo {
+  kind:  FilterKeys
+  value: string | SortOptions
+}
+
+export type FilterKeys = keyof PlayerState['filters']
 
 /* initial state */
 
 const initialState: PlayerState = {
   playlists: {
-    empty:     [],
-    initial:   [],
-    favourite: [],
-    active:    [],
-    shuffled:  [],
-    visible:   [],
-    filtered:  [],
+    empty:      [],
+    initial:    [],
+    favourite:  [],
+    active:     [],
+    shuffled:   [],
+    visible:    [],
+    filtered:   [],
   },
   catalogs:     [],
   catalogName:  "",
+  filters: {
+    authors:    [],
+    genres:     [],
+  },
   currentTrack: null,
   isPaused:     true,
   isShuffled:   false,
@@ -79,6 +94,12 @@ export function getEmptyTrack(): TrackType {
   }
 }
 
+function doShuffle(state: WritableDraft<PlayerState>) {
+  if (state.isShuffled)
+    state.playlists.shuffled = state.playlists.active.toSorted(() => 0.5 - Math.random())
+  else
+    state.playlists.shuffled = state.playlists.active
+}
 
 /* slice */
 
@@ -90,10 +111,7 @@ export const playerSlice = createSlice({
       state.playlists[action.payload.kind] = action.payload.playlist ?? state.playlists.empty
 
       if (action.payload.kind === "active") {
-        if (state.isShuffled)
-          state.playlists.shuffled = state.playlists.active.toSorted(() => 0.5 - Math.random())
-        else
-          state.playlists.shuffled = state.playlists.active
+        doShuffle(state)
       } else if (action.payload.kind === "visible") {
         state.playlists.filtered = state.playlists.visible
       }
@@ -102,10 +120,7 @@ export const playerSlice = createSlice({
       state.playlists.active = action.payload.playlist
       state.currentTrack     = action.payload.track
 
-      if (state.isShuffled)
-        state.playlists.shuffled = state.playlists.active.toSorted(() => 0.5 - Math.random())
-      else
-        state.playlists.shuffled = state.playlists.active
+      doShuffle(state)
     },
     setCatalogName(state, action: PayloadAction<string>) {
       state.catalogName = action.payload
@@ -130,14 +145,9 @@ export const playerSlice = createSlice({
       state.isPaused = action.payload
     },
     toggleIsShuffled(state) {
-      console.log("toggleIsShuffled", state.isShuffled)
-
       state.isShuffled = !state.isShuffled
 
-      if (state.isShuffled)
-        state.playlists.shuffled = state.playlists.active.toSorted(() => 0.5 - Math.random())
-      else
-        state.playlists.shuffled = state.playlists.active
+      doShuffle(state)
     },
     likeTrack(state, action: PayloadAction<TrackType>) {
       state.playlists.favourite.push(action.payload)
@@ -171,5 +181,5 @@ export const playerSlice = createSlice({
 })
 
 export { getTracks, getFavouriteTracks, getCatalogs }
-export const { setPlaylist, setActivePlaylistAndTrackInside, setCatalogName, setIsPaused, selectPrevTrack, selectNextTrack, toggleIsShuffled, likeTrack, dislikeTrack } = playerSlice.actions
+export const { setPlaylist, setActivePlaylistAndTrackInside, setCatalogName, setFilter, setIsPaused, selectPrevTrack, selectNextTrack, toggleIsShuffled, likeTrack, dislikeTrack } = playerSlice.actions
 export const playerReducer = playerSlice.reducer
