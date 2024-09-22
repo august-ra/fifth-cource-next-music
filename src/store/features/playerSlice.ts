@@ -10,6 +10,8 @@ const getFavouriteTracks = createAsyncThunk("player/getFavouriteTracks", TracksA
 const getCatalogs        = createAsyncThunk("player/getCatalogs",        TracksAPI.getCatalogs)
 
 
+/* interfaces */
+
 interface PlayerState {
   playlists: {
     empty:     PlaylistType
@@ -37,6 +39,9 @@ interface PlaylistInfo {
   playlist: PlaylistType
 }
 
+
+/* initial state */
+
 const initialState: PlayerState = {
   playlists: {
     empty:     [],
@@ -53,6 +58,8 @@ const initialState: PlayerState = {
   isPaused:     true,
   isShuffled:   false,
 }
+
+/* functions */
 
 export function getEmptyTrack(): TrackType {
   return {
@@ -71,6 +78,9 @@ export function getEmptyTrack(): TrackType {
     },
   }
 }
+
+
+/* slice */
 
 export const playerSlice = createSlice({
   name: "player",

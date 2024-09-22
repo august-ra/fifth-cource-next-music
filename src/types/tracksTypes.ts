@@ -49,10 +49,10 @@ export type CatalogsOptions = keyof CatalogsImagesDetails
 
 /* enumerations */
 
-export enum FilterKind {
-  artist = "исполнителю",
-  genre  = "жанру",
-  year   = "году выпуска",
+export enum FilterKinds {
+  authors = "исполнителю",
+  genres  = "жанру",
+  year    = "году выпуска",
 }
 
 /* constants */

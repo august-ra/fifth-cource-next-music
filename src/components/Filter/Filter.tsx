@@ -5,13 +5,15 @@ import styles from "./Filter.module.css"
 import FilterButton from "./FilterButton/FilterButton"
 
 import { useState } from "react"
-import { FilterKind, PlaylistType } from "@/types/tracksTypes"
+import { FilterKinds, PlaylistType } from "@/types/tracksTypes"
 
 
 const filterKind: string[] = [
-  FilterKind.artist,
-  FilterKind.genre,
-  FilterKind.year,
+  "1", // "Искать по:"
+  FilterKinds.authors,
+  FilterKinds.genres,
+  "2", // "Упорядочить по:"
+  FilterKinds.year,
 ]
 
 interface Props {
@@ -23,14 +25,14 @@ export default function Filter({ playlist }: Props) {
 
   function getUniqueLists(filter: string): string[] {
     switch (filter) {
-      case FilterKind.artist:
+      case FilterKinds.authors:
         return Array.from(new Set<string>(playlist.map((track) => track.author)))
           .filter((line) => line !== "-")
           .sort()
-      case FilterKind.genre:
+      case FilterKinds.genres:
         return Array.from(new Set<string>(playlist.map((track) => track.genre).flat()))
           .sort()
-      case FilterKind.year:
+      case FilterKinds.year:
         return ["По умолчанию", "Сначала новые", "Сначала старые"]
       default:
         return []
