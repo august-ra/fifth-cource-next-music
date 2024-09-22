@@ -70,11 +70,11 @@ export default function Bar() {
 
   function goNextTrack() {
     if (!isLooped)
-      dispatch(selectNextTrack(true))
+      handleNextTrack()
   }
 
   function handleNextTrack() {
-    dispatch(selectNextTrack(false))
+    dispatch(selectNextTrack())
   }
 
   function handlePrevTrack() {
