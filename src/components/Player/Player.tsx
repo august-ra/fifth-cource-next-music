@@ -1,3 +1,5 @@
+"use client"
+
 import styles from "./Player.module.css"
 import shared from "@/components/SharedButtons/SharedButtons.module.css"
 import cn from "classnames"

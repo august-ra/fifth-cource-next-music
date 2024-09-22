@@ -28,6 +28,7 @@ interface PlayerState {
   catalogs:     CatalogsCollectionType
   catalogName:  string
   filters: {
+    queryText:  string
     authors:    string[]
     genres:     string[]
     sort:       SortOptions
@@ -70,6 +71,7 @@ const initialState: PlayerState = {
   catalogs:     [],
   catalogName:  "",
   filters: {
+    queryText:  "",
     authors:    [],
     genres:     [],
     sort:       SortOptions.disabled,
@@ -126,6 +128,14 @@ function doUpdateFilteredPlaylist(state: WritableDraft<PlayerState>) {
 
     isVisible = state.filters.genres.length === 0
       || track.genre.reduce((_, genre) => state.filters.genres.includes(genre), false)
+
+    if (!isVisible)
+      return false
+
+    isVisible = !state.filters.queryText
+      || track.author.includes(state.filters.queryText)
+      || track.name.includes(state.filters.queryText)
+      || track.album.includes(state.filters.queryText)
 
     return isVisible
   })
@@ -186,9 +196,14 @@ export const playerSlice = createSlice({
       if (action.payload.kind === "sort")
         return doSort(state, action.payload.value as SortOptions)
 
-      doFilter(state, action.payload.value as string, action.payload.kind)
-      doSearch(state, state.filters.queryText)
-        doSort(state, state.filters.sort)
+      if (action.payload.kind === "queryText") {
+        doSearch(state, action.payload.value as string)
+          doSort(state, state.filters.sort)
+      } else {
+        doFilter(state, action.payload.value as string, action.payload.kind)
+        doSearch(state, state.filters.queryText)
+          doSort(state, state.filters.sort)
+      }
     },
     selectPrevTrack(state) {
       const index = state.playlists.shuffled.findIndex((track) => track._id === state.currentTrack?._id)
