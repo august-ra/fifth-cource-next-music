@@ -1,6 +1,7 @@
 "use client"
 
 import styles from "./Filter.module.css"
+import cn from "classnames"
 
 import FilterButton from "./FilterButton/FilterButton"
 
@@ -48,9 +49,17 @@ export default function Filter({ playlist }: Props) {
 
   return (
     <div className={styles.filter}>
-      <div className={styles.filterTitle}>Искать по:</div>
       {
         filterKind.map((filter, index) => {
+          if (filter === "1")
+            return (
+              <div key={index} className={styles.filterTitle}>Искать по:</div>
+            )
+          else if (filter === "2")
+            return (
+              <div key={index} className={cn(styles.filterTitle, styles.second)}>Упорядочить по:</div>
+            )
+
           const list = getUniqueLists(filter)
 
           if (openedFilter && !list.length)

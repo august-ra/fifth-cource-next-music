@@ -13,6 +13,10 @@
   font-size: 16px;
   line-height: 24px;
   margin-right: 5px;
+
+  &.second {
+    margin-left: 32px;
+  }
 }
 
 .filterButtonWrapper {
