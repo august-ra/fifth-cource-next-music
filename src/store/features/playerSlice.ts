@@ -2,8 +2,9 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { WritableDraft } from "immer"
 
 import { TracksAPI } from "@/api/tracks"
-import { CatalogsCollectionType, PlaylistType, TrackType } from "@/types/tracksTypes"
+import { CatalogsCollectionType, PlaylistType, SortOptions, TrackType } from "@/types/tracksTypes"
 import { isError } from "@/types/errorsTypes"
+import { getDateNumber } from "@/utils/datetime"
 
 
 const getTracks          = createAsyncThunk("player/getTracks",          TracksAPI.getTracks)
@@ -22,12 +23,14 @@ interface PlayerState {
     shuffled:   PlaylistType
     visible:    PlaylistType // shown
     filtered:   PlaylistType
+    sorted:     PlaylistType
   }
   catalogs:     CatalogsCollectionType
   catalogName:  string
   filters: {
     authors:    string[]
     genres:     string[]
+    sort:       SortOptions
   }
   currentTrack: TrackType | null
   isPaused:     boolean
@@ -62,12 +65,14 @@ const initialState: PlayerState = {
     shuffled:   [],
     visible:    [],
     filtered:   [],
+    sorted:     [],
   },
   catalogs:     [],
   catalogName:  "",
   filters: {
     authors:    [],
     genres:     [],
+    sort:       SortOptions.disabled,
   },
   currentTrack: null,
   isPaused:     true,
@@ -94,6 +99,51 @@ export function getEmptyTrack(): TrackType {
   }
 }
 
+function doSearch(state: WritableDraft<PlayerState>, value: string) {
+  state.filters.queryText = value
+
+  doUpdateFilteredPlaylist(state)
+}
+
+function doFilter(state: WritableDraft<PlayerState>, value: string, kind: PlayerFilterInfo["kind"]) {
+  if (kind === "authors" || kind === "genres") {
+    if (state.filters[kind].includes(value))
+      state.filters[kind].splice(state.filters[kind].indexOf(value), 1)
+    else
+      state.filters[kind].push(value)
+  }
+
+  doUpdateFilteredPlaylist(state)
+}
+
+function doUpdateFilteredPlaylist(state: WritableDraft<PlayerState>) {
+  state.playlists.filtered = state.playlists.visible.filter((track) => {
+    let isVisible =  state.filters.authors.length === 0
+      || state.filters.authors.includes(track.author)
+
+    if (!isVisible)
+      return false
+
+    isVisible = state.filters.genres.length === 0
+      || track.genre.reduce((_, genre) => state.filters.genres.includes(genre), false)
+
+    return isVisible
+  })
+}
+
+function doSort(state: WritableDraft<PlayerState>, value: SortOptions) {
+  if (value === SortOptions.disabled) {
+    state.filters.sort     = value
+    state.playlists.sorted = state.playlists.filtered
+  } else {
+    state.filters.sort     = value
+    state.playlists.sorted = state.playlists.filtered.toSorted((lhs, rhs) => {
+      const result = lhs.release_value - rhs.release_value
+      return value === SortOptions.oldOnTop ? result : -result
+    })
+  }
+}
+
 function doShuffle(state: WritableDraft<PlayerState>) {
   if (state.isShuffled)
     state.playlists.shuffled = state.playlists.active.toSorted(() => 0.5 - Math.random())
@@ -110,10 +160,17 @@ export const playerSlice = createSlice({
     setPlaylist(state, action: PayloadAction<PlaylistInfo>) {
       state.playlists[action.payload.kind] = action.payload.playlist ?? state.playlists.empty
 
-      if (action.payload.kind === "active") {
+      if (action.payload.kind === "initial") {
+        state.playlists.initial.forEach((track) => {
+          track.release_value = getDateNumber(track.release_date) // normalize dates
+          track.genre = track.genre.map((genre) => genre === "Рок музыка" ? "Рок-музыка" : genre) // fixing spelling
+        })
+      }
+      else if (action.payload.kind === "active") {
         doShuffle(state)
       } else if (action.payload.kind === "visible") {
         state.playlists.filtered = state.playlists.visible
+        state.playlists.sorted   = state.playlists.visible
       }
     },
     setActivePlaylistAndTrackInside(state, action: PayloadAction<PlayerInfo>) {
@@ -124,6 +181,14 @@ export const playerSlice = createSlice({
     },
     setCatalogName(state, action: PayloadAction<string>) {
       state.catalogName = action.payload
+    },
+    setFilter(state, action: PayloadAction<PlayerFilterInfo>) {
+      if (action.payload.kind === "sort")
+        return doSort(state, action.payload.value as SortOptions)
+
+      doFilter(state, action.payload.value as string, action.payload.kind)
+      doSearch(state, state.filters.queryText)
+        doSort(state, state.filters.sort)
     },
     selectPrevTrack(state) {
       const index = state.playlists.shuffled.findIndex((track) => track._id === state.currentTrack?._id)

@@ -8,6 +8,7 @@ export interface TrackType {
   name:                string
   author:              string
   release_date:        string
+  release_value:       number
   genre:               string[]
   duration_in_seconds: number
   album:               string
@@ -48,6 +49,12 @@ export type CatalogsCollectionType = CatalogType[]
 export type CatalogsOptions = keyof CatalogsImagesDetails
 
 /* enumerations */
+
+export enum SortOptions {
+  disabled = "По умолчанию", // 0,
+  newOnTop = "Сначала новые", // 1,
+  oldOnTop = "Сначала старые", // 2,
+}
 
 export enum FilterKinds {
   authors = "исполнителю",

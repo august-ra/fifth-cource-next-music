@@ -1,36 +1,48 @@
+"use client"
+
 import styles from "./Tracks.module.css"
 
 import Filter from "@components/Filter/Filter"
 import Playlist from "@components/Playlist/Playlist"
 
+import { useEffect, useState } from "react"
+import { useAppDispatch, useAppSelector } from "@/store/store"
+import { setPlaylist } from "@/store/features/playerSlice"
+
 import { TracksAPI } from "@/api/tracks"
-import { PlaylistType } from "@/types/tracksTypes"
 import { ErrorMessage, isError } from "@/types/errorsTypes"
 
 
-export default async function Home() {
-  let playlist: PlaylistType = []
-  let errorMsg: ErrorMessage | null
+export default function Home() {
+  const dispatch  = useAppDispatch()
+  const playlists = useAppSelector((state) => state.player.playlists)
+  const [errorMsg, setErrorMsg] = useState<ErrorMessage | null>(null)
 
-  try {
-    const data = await TracksAPI.getTracks()
+  useEffect(() => {
+    TracksAPI.getTracks()
+      .then((data) => {
+        if (isError(data)) {
+          setErrorMsg(data as ErrorMessage)
 
-    if (isError(data))
-      errorMsg = data as ErrorMessage
-    else
-      [playlist, errorMsg] = [data, null]
-  } catch (error: unknown) {
-    if (error instanceof Error)
-      errorMsg = { status: 0, endpoint: "", message: error.message }
-    else
-      errorMsg = { status: 0, endpoint: "", message: "Неизвестная ошибка" }
-  }
+          data = []
+        }
+
+        dispatch(setPlaylist({ kind: "initial", playlist: data }))
+        dispatch(setPlaylist({ kind: "visible", playlist: data }))
+      })
+      .catch((error: unknown) => {
+        if (error instanceof Error)
+          setErrorMsg({ status: 0, endpoint: "", message: error.message })
+        else
+          setErrorMsg({ status: 0, endpoint: "", message: "Неизвестная ошибка" })
+      })
+  }, [])
 
   return (
     <>
       <h2 className={styles.mainTitle}>Треки</h2>
-      <Filter playlist={playlist} />
-      <Playlist playlist={playlist} errorMsg={errorMsg} />
+      <Filter visiblePlaylist={playlists.visible} filteredPlaylist={playlists.filtered} />
+      <Playlist playlist={playlists.sorted} errorMsg={errorMsg} />
     </>
   )
 }
