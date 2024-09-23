@@ -38,11 +38,11 @@ export default function FilterList({ title, filterOptions, filterCounters }: Pro
 
             return (
               <li key={filter} className={styles.filterLine} onClick={() => toggleFilter(filter)}>
-                <span className={cn(styles.filterCaption, { [styles.active]: isActive })}>{filter}</span>&nbsp;
+                <span className={cn(styles.filterListCaption, { [styles.active]: isActive })}>{filter}</span>&nbsp;
                 {
                   counter
                     && (
-                      <span className={styles.filterCounter}>({counter})</span>
+                      <span className={styles.filterListCounter}>({counter})</span>
                     )
                 }
               </li>

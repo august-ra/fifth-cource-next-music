@@ -12,8 +12,13 @@
   }
 
   &:active {
-    border-color: #ad61ff;
-    color: #ad61ff;
+    border-color: #b672ff;
+    color: #b672ff;
+  }
+
+  &.active {
+    border-color: #b672ff;
+    color: #b672ff;
   }
 }
 
@@ -41,6 +46,6 @@
   }
 
   &.liked svg {
-    fill: #ad61ff;
+    fill: #b672ff;
   }
 }

@@ -20,7 +20,7 @@ interface Props {
 
 export default function Catalog({ params }: Props) {
   const dispatch = useAppDispatch()
-  const { playlists, catalogName } = useAppSelector((state) => state.player)
+  const { playlists, catalogName, filters } = useAppSelector((state) => state.player)
   const [errorMsg, setErrorMsg] = useState<ErrorMessage | null>(null)
 
   useEffect(() => {
@@ -46,7 +46,7 @@ export default function Catalog({ params }: Props) {
   return (
     <>
       <h2 className={styles.mainTitle}>{catalogName}</h2>
-      <Filter visiblePlaylist={playlists.visible} filteredPlaylist={playlists.filtered} />
+      <Filter visiblePlaylist={playlists.visible} filteredPlaylist={playlists.filtered} filters={filters} />
       <Playlist playlist={playlists.sorted} errorMsg={errorMsg} />
     </>
   )

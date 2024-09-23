@@ -53,7 +53,8 @@ interface PlayerFilterInfo {
   value: string | SortOptions
 }
 
-export type FilterKeys = keyof PlayerState['filters']
+export type FiltersType = PlayerState['filters']
+export type FilterKeys  = keyof PlayerState['filters']
 
 /* initial state */
 

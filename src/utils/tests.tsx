@@ -6,6 +6,7 @@ import { Provider } from 'react-redux'
 import type { AppStore, RootState } from "@/store/store"
 import { makeStore } from "@/store/store"
 
+
 interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
   preloadedState?: Partial<RootState>
   store?: AppStore

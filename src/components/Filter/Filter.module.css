@@ -33,6 +33,21 @@
   padding: 6px 20px;
 }
 
+.filterCounter {
+  min-width: 26px;
+  height: 26px;
+  border: none;
+  border-radius: 13px;
+  background: #b672ff;
+  color: #ffffff;
+  padding-inline: 4px;
+  box-sizing: border-box;
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translate(8px, -8px);
+}
+
 .filterListContainer {
   position: absolute;
   width: max-content;
@@ -73,7 +88,7 @@
   }
 }
 
-.filterCaption {
+.filterListCaption {
   &:hover {
     text-decoration: underline;
     color: #b672ff;
@@ -84,7 +99,7 @@
   }
 }
 
-.filterCounter {
+.filterListCounter {
   color: #b672ff;
   font-size: 16px;
   line-height: 24px;

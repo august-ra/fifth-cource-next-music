@@ -6,7 +6,8 @@ import cn from "classnames"
 import FilterButton from "./FilterButton/FilterButton"
 
 import { useState } from "react"
-import { FilterKinds, PlaylistType } from "@/types/tracksTypes"
+import { FiltersType } from "@/store/features/playerSlice"
+import { FilterKinds, PlaylistType, SortOptions } from "@/types/tracksTypes"
 
 
 const filterKind: string[] = [
@@ -20,9 +21,10 @@ const filterKind: string[] = [
 interface Props {
   visiblePlaylist:  PlaylistType
   filteredPlaylist: PlaylistType
+  filters:          FiltersType
 }
 
-export default function Filter({ visiblePlaylist, filteredPlaylist }: Props) {
+export default function Filter({ visiblePlaylist, filteredPlaylist, filters }: Props) {
   const [openedFilter, setOpenedFilter] = useState<string | null>(null)
 
   function getUniqueLists(filter: string): string[] {
@@ -62,6 +64,19 @@ export default function Filter({ visiblePlaylist, filteredPlaylist }: Props) {
     return counters
   }
 
+  function getCounter(filter: string): number {
+    switch (filter) {
+      case FilterKinds.authors:
+        return filters.authors.length
+      case FilterKinds.genres:
+        return filters.genres.length
+      case FilterKinds.year:
+        return filters.sort !== SortOptions.disabled ? -1 : 0
+      default:
+        return 0
+    }
+  }
+
   function handleOpenedFilter(filter: string): void {
     if (openedFilter === filter)
       setOpenedFilter(null)
@@ -84,6 +99,7 @@ export default function Filter({ visiblePlaylist, filteredPlaylist }: Props) {
 
           const list     = getUniqueLists(filter)
           const counters = getListCounters(filter, list)
+          const counter  = getCounter(filter)
 
           list.sort((lhs, rhs) => ((counters[rhs] ? 1 : 0) - (counters[lhs] ? 1 : 0)) * 1000 + lhs.localeCompare(rhs))
 
@@ -92,7 +108,7 @@ export default function Filter({ visiblePlaylist, filteredPlaylist }: Props) {
 
           return (
             <FilterButton key={index} title={filter}
-                          filterList={list} filterCounters={counters}
+                          filterList={list} filterCounters={counters} activeCounter={counter}
                           opened={openedFilter === filter} openFilter={handleOpenedFilter} />
           )
         })
