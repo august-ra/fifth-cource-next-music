@@ -6,7 +6,7 @@ import Player from "@components/Player/Player"
 import ProgressBar from "@components/Bar/ProgressBar/ProgressBar"
 import Volume from "@components/Volume/Volume"
 
-import { ChangeEvent, useEffect, useRef, useState } from "react"
+import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react"
 import { useAppDispatch, useAppSelector } from "@/store/store"
 import { selectNextTrack, selectPrevTrack, setIsPaused, toggleIsShuffled } from "@/store/features/playerSlice"
 import { getEmptyTrack } from "@/store/features/playerSlice"
@@ -39,7 +39,7 @@ export default function Bar() {
     }
   }, [isLooped])
 
-  function togglePlay() {
+  const togglePlay = useCallback(() => {
     if (!currentAudio || !currentTrack || !currentTrack._id)
       return
 
@@ -49,37 +49,31 @@ export default function Bar() {
       currentAudio.pause()
 
     dispatch(setIsPaused(currentAudio.paused))
-  }
+  }, [currentTrack])
 
-  function toggleLoop() {
-    setIsLooped((prev) => !prev)
-  }
+  const toggleLoop = useCallback(() => setIsLooped((prev) => !prev), [])
 
-  function toggleShuffled() {
-    dispatch(toggleIsShuffled())
-  }
+  const toggleShuffled = useCallback(() => dispatch(toggleIsShuffled()), [])
 
-  function handleTimeUpdate(event: ChangeEvent<HTMLAudioElement>) {
+  const handleTimeUpdate = useCallback((event: ChangeEvent<HTMLAudioElement>) => {
     setPosition(event.currentTarget.currentTime)
-  }
+  }, [])
 
-  function handleSeek(event: ChangeEvent<HTMLInputElement>) {
+  const handleSeek = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+    const currentAudio = audioRef?.current
+
     if (currentAudio)
       currentAudio.currentTime = Number(event.target.value)
-  }
+  }, [])
 
-  function goNextTrack() {
+  const goNextTrack = useCallback(() => {
     if (!isLooped)
       handleNextTrack()
-  }
+  }, [isLooped])
 
-  function handleNextTrack() {
-    dispatch(selectNextTrack())
-  }
+  const handleNextTrack = useCallback(() => dispatch(selectNextTrack()), [])
 
-  function handlePrevTrack() {
-    dispatch(selectPrevTrack())
-  }
+  const handlePrevTrack = useCallback(() => dispatch(selectPrevTrack()), [])
 
   return (
     <div className={styles.bar}>
