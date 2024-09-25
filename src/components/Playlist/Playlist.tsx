@@ -19,6 +19,11 @@ export default function Playlist({ playlist, errorMsg }: Props) {
       <ErrorBlock errorMsg={errorMsg} />
     )
 
+  if (!playlist.length)
+    return (
+      <div className={styles.playlistWrapper}>Ого! Треки не найдены...</div>
+    )
+
   return (
     <div className={styles.playlistWrapper}>
       <div className={styles.playlistTitle}>
