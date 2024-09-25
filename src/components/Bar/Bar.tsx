@@ -59,13 +59,6 @@ export default function Bar() {
     setPosition(event.currentTarget.currentTime)
   }, [])
 
-  const handleSeek = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-    const currentAudio = audioRef?.current
-
-    if (currentAudio)
-      currentAudio.currentTime = Number(event.target.value)
-  }, [])
-
   const goNextTrack = useCallback(() => {
     if (!isLooped)
       handleNextTrack()
@@ -81,7 +74,7 @@ export default function Bar() {
         <audio className={styles.barAudio} src={currentTrack?.track_file}
                ref={audioRef} onTimeUpdate={handleTimeUpdate} onEnded={goNextTrack} />
 
-        <ProgressBar max={currentAudio?.duration || 0} position={position} handleSeek={handleSeek} />
+        <ProgressBar audioRef={audioRef} position={position} />
 
         <div className={styles.barPlayer}>
           <Player currentTrack={currentTrack ?? getEmptyTrack()} isLooped={isLooped}
