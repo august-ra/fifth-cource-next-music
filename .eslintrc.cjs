@@ -27,7 +27,7 @@ module.exports = {
       'JSXOpeningElement',
       'JSXClosingElement',
     ] } ],
-    '@stylistic/js/key-spacing': [ 'error', { 'align': 'value' } ],
+    '@stylistic/js/key-spacing': 'off',
     '@stylistic/js/no-trailing-spaces': 'error',
     '@stylistic/js/object-curly-spacing': [ 'error', 'always' ],
     '@stylistic/js/operator-linebreak': [ 'error', 'before', {
