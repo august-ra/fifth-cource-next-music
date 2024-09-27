@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { WritableDraft } from "immer"
 
 import { TracksAPI } from "@/api/tracks"
-import { CatalogsCollectionType, PlaylistType, SortOptions, TrackType } from "@/types/tracksTypes"
+import { CatalogsCollectionType, PlaylistType, SortOptions, TrackIndex, TrackType } from "@/types/tracksTypes"
 import { isError } from "@/types/errorsTypes"
 import { getDateNumber } from "@/utils/datetime"
 
@@ -24,6 +24,7 @@ interface PlayerState {
     visible:    PlaylistType // shown
     filtered:   PlaylistType
     sorted:     PlaylistType
+    indexes:    TrackIndex[]
   }
   catalogs:     CatalogsCollectionType
   catalogName:  string
@@ -44,7 +45,7 @@ interface PlayerInfo {
 }
 
 interface PlaylistInfo {
-  kind:     keyof PlayerState['playlists']
+  kind:     "initial" | "favourite" | "active" | "shuffled" | "visible" | "filtered" | "sorted"
   playlist: PlaylistType
 }
 
@@ -156,10 +157,24 @@ function doSort(state: WritableDraft<PlayerState>, value: SortOptions) {
 }
 
 function doShuffle(state: WritableDraft<PlayerState>) {
-  if (state.isShuffled)
-    state.playlists.shuffled = state.playlists.active.toSorted(() => 0.5 - Math.random())
-  else
+  if (!state.isShuffled) {
     state.playlists.shuffled = state.playlists.active
+    return
+  }
+
+  state.playlists.shuffled = state.playlists.active.toSorted(() => 0.5 - Math.random())
+
+  const offset = state.playlists.shuffled.findIndex((track) => track._id === state.currentTrack?._id)
+
+  // first indexing
+  state.playlists.indexes = state.playlists.shuffled.map((track, index) => {
+    const num = index - offset
+
+    return {
+      _id: track._id,
+      num: num > 0 ? num : state.playlists.shuffled.length + num,
+    }
+  })
 }
 
 /* slice */
@@ -214,6 +229,14 @@ export const playerSlice = createSlice({
         state.currentTrack = track
       else
         state.currentTrack = state.playlists.shuffled[state.playlists.shuffled.length - 1]
+
+      if (state.isShuffled)
+        for (const record of state.playlists.indexes) {
+          ++record.num
+
+          if (record.num >= state.playlists.shuffled.length)
+            record.num = 1
+        }
     },
     selectNextTrack(state) {
       const index = state.playlists.shuffled.findIndex((track) => track._id === state.currentTrack?._id)
@@ -223,6 +246,14 @@ export const playerSlice = createSlice({
         state.currentTrack = track
       else
         state.currentTrack = state.playlists.shuffled[0]
+
+      if (state.isShuffled)
+        for (const record of state.playlists.indexes) {
+          --record.num
+
+          if (record.num < 0)
+            record.num = state.playlists.shuffled.length - 1
+        }
     },
     setIsPaused(state, action: PayloadAction<boolean>) {
       state.isPaused = action.payload

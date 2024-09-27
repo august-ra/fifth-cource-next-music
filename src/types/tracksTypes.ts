@@ -21,6 +21,11 @@ export interface TrackType {
   staredUser:          UserType[]
 }
 
+export interface TrackIndex {
+  _id: number
+  num: number
+}
+
 export interface CatalogType {
   _id:   number
   name:  string

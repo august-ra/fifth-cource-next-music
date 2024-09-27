@@ -18,8 +18,16 @@ interface Props {
 
 export default function Track({ playlist, track }: Props) {
   const dispatch = useAppDispatch()
-  const { currentTrack, isPaused } = useAppSelector((state) => state.player)
+  const { playlists, currentTrack, isPaused, isShuffled } = useAppSelector((state) => state.player)
   const { isLiked, onLike } = useLikeButton(track)
+
+  function getIndex(track: TrackType) {
+    for (const record of playlists.indexes)
+      if (record._id === track._id)
+        return record.num
+
+    return 0
+  }
 
   function handleTrackClick() {
     dispatch(setActivePlaylistAndTrackInside({ playlist, track }))
@@ -32,13 +40,21 @@ export default function Track({ playlist, track }: Props) {
       <div className={styles.track}>
         <div className={styles.trackTitle}>
           <div className={styles.trackTitleImage}>
-            <svg>
-              <use xlinkHref="/img/icon/sprite.svg#icon-note" />
-            </svg>
             {
-              isCurrent
-                && (
-                  <div className={cn(styles.trackMark, { [styles.animated]: !isPaused })} />
+              isCurrent || isShuffled
+                ? (
+                  isCurrent
+                    ? (
+                      <div className={cn(styles.trackMark, { [styles.animated]: !isPaused })} />
+                    )
+                    : (
+                      <div className={cn(styles.trackMark, styles.trackNum)}>{getIndex(track)}</div>
+                    )
+                )
+                : (
+                  <svg>
+                    <use xlinkHref="/img/icon/sprite.svg#icon-note" />
+                  </svg>
                 )
             }
           </div>

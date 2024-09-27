@@ -49,6 +49,17 @@
   &.animated {
     animation: pulsation 1.5s ease-in-out infinite both;
   }
+
+  &.trackNum {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: transparent;
+    color: #d9b6ff;
+    font-size: 14px;
+    font-weight: 500;
+  }
 }
 
 @keyframes pulsation {
