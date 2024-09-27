@@ -38,12 +38,8 @@ function ActiveTrack({ currentTrack }: Props) {
             <use xlinkHref="/img/icon/sprite.svg#icon-note" />
           </svg>
         </div>
-        <div className={styles.trackAuthor}>
-          <a className={styles.trackAuthorLink} href="http://">{currentTrack.name}</a>
-        </div>
-        <div className={styles.trackAlbum}>
-          <a className={styles.trackAlbumLink} href="http://">{currentTrack.author}</a>
-        </div>
+        <div className={styles.trackAuthor}>{currentTrack.name}</div>
+        <div className={styles.trackAlbum}>{currentTrack.author}</div>
       </div>
       <div className={cn(styles.trackLikeContainer, shared.btnIcon, { [shared.liked]: isLiked })} onClick={onLike}>
         <svg>

@@ -59,17 +59,11 @@ export default function Track({ playlist, track }: Props) {
             }
           </div>
           <div className={styles.trackTitleText}>
-            <a className={styles.trackTitleLink} href="http://">
-              {track.name} {/*<span>{additionals}</span>*/}
-            </a>
+            {track.name} {/*<span>{additionals}</span>*/}
           </div>
         </div>
-        <div className={styles.trackAuthor}>
-          <a className={styles.trackAuthorLink} href="http://">{track.author}</a>
-        </div>
-        <div className={styles.trackAlbum}>
-          <a className={styles.trackAlbumLink} href="http://">{track.album}</a>
-        </div>
+        <div className={styles.trackAuthor}>{track.author}</div>
+        <div className={styles.trackAlbum}>{track.album}</div>
         <div className={styles.trackTime}>
           <div className={cn(shared.btnIcon, { [shared.liked]: isLiked })} onClick={onLike}>
             <svg>
