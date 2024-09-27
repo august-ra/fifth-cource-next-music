@@ -1,9 +1,9 @@
 import { UserFormData } from "@/types/usersTypes"
 import { getEmptyError } from "@/types/errorsTypes"
+import URI from "@/utils/constants"
 
 
 export const UserAPI = {
-  uri:   "https://webdev-music-003b5b991590.herokuapp.com",
   error: getEmptyError(),
 
 
@@ -26,7 +26,7 @@ export const UserAPI = {
 
 
   async signIn(userData: UserFormData) {
-    return await UserAPI.requestToEndPoint(`${UserAPI.uri}/user/login/`, {
+    return await UserAPI.requestToEndPoint(`${URI}/user/login/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -36,7 +36,7 @@ export const UserAPI = {
   },
 
   async signUp(userData: UserFormData) {
-    return await UserAPI.requestToEndPoint(`${UserAPI.uri}/user/signup/`, {
+    return await UserAPI.requestToEndPoint(`${URI}/user/signup/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -46,7 +46,7 @@ export const UserAPI = {
   },
 
   async getTokens(userData: UserFormData) {
-    return await UserAPI.requestToEndPoint(`${UserAPI.uri}/user/token/`, {
+    return await UserAPI.requestToEndPoint(`${URI}/user/token/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -56,7 +56,7 @@ export const UserAPI = {
   },
 
   async refreshTokens(token: string) {
-    return await UserAPI.requestToEndPoint(`${UserAPI.uri}/user/token/refresh/`, {
+    return await UserAPI.requestToEndPoint(`${URI}/user/token/refresh/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
