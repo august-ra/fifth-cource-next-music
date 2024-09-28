@@ -26,7 +26,7 @@ export default function Track({ playlist, track }: Props) {
       if (record._id === track._id)
         return record.num
 
-    return 0
+    return null
   }
 
   function handleTrackClick() {
