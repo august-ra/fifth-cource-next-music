@@ -193,8 +193,7 @@ export const playerSlice = createSlice({
           track.release_value = getDateNumber(track.release_date) // normalize dates
           track.genre = track.genre.map((genre) => genre === "Рок музыка" ? "Рок-музыка" : genre) // fixing spelling
         })
-      }
-      else if (action.payload.kind === "active") {
+      } else if (action.payload.kind === "active") {
         doShuffle(state)
       } else if (action.payload.kind === "visible") {
         state.playlists.filtered = state.playlists.visible

@@ -10,7 +10,7 @@ import { FiltersType } from "@/store/features/playerSlice"
 import { FilterKinds, PlaylistType, SortOptions } from "@/types/tracksTypes"
 
 
-const filterKind: string[] = [
+const filterKinds: string[] = [
   "1", // "Искать по:"
   FilterKinds.authors,
   FilterKinds.genres,
@@ -87,7 +87,7 @@ export default function Filter({ visiblePlaylist, filteredPlaylist, filters }: P
   return (
     <div className={styles.filter}>
       {
-        filterKind.map((filter, index) => {
+        filterKinds.map((filter, index) => {
           if (filter === "1")
             return (
               <div key={index} className={styles.filterTitle}>Искать по:</div>

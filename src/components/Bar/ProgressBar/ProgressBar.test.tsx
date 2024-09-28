@@ -9,7 +9,7 @@ describe("ProgressBar", () => {
   it("renders correctly", () => {
     const ref = createRef<HTMLAudioElement>()
 
-    render(<ProgressBar audioRef={ref} position={50} />)
+    render(<ProgressBar audioRef={ref} defaultMax={100} position={50} />)
 
     const input = screen.getByDisplayValue(50)
     expect(input).toBeInTheDocument()

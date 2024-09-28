@@ -74,7 +74,7 @@ export default function Bar() {
         <audio className={styles.barAudio} src={currentTrack?.track_file}
                ref={audioRef} onTimeUpdate={handleTimeUpdate} onEnded={goNextTrack} />
 
-        <ProgressBar audioRef={audioRef} position={position} />
+        <ProgressBar audioRef={audioRef} defaultMax={0} position={position} />
 
         <div className={styles.barPlayer}>
           <Player currentTrack={currentTrack ?? getEmptyTrack()} isLooped={isLooped}
