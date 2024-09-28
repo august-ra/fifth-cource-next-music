@@ -15,7 +15,7 @@ interface Props {
   errorMsg:  ErrorMessage | null
 }
 
-export default function Playlist({ playlist, errorMsg }: Props) {
+export default function Playlist({ playlist, isLoading, errorMsg }: Props) {
   if (errorMsg)
     return (
       <ErrorBlock errorMsg={errorMsg} />
