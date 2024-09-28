@@ -106,7 +106,7 @@ export function getEmptyTrack(): TrackType {
 }
 
 function doSearch(state: WritableDraft<PlayerState>, value: string) {
-  state.filters.queryText = value
+  state.filters.queryText = value.toLowerCase()
 
   doUpdateFilteredPlaylist(state)
 }
@@ -137,9 +137,9 @@ function doUpdateFilteredPlaylist(state: WritableDraft<PlayerState>) {
       return false
 
     isVisible = !state.filters.queryText
-      || track.author.includes(state.filters.queryText)
-      || track.name.includes(state.filters.queryText)
-      || track.album.includes(state.filters.queryText)
+      || track.author.toLowerCase().includes(state.filters.queryText)
+      || track.name.toLowerCase().includes(state.filters.queryText)
+      || track.album.toLowerCase().includes(state.filters.queryText)
 
     return isVisible
   })
