@@ -1,5 +1,5 @@
 import { TypedUseSelectorHook, useDispatch, useSelector, useStore } from "react-redux"
-import { combineReducers, configureStore } from '@reduxjs/toolkit'
+import { combineReducers, configureStore } from "@reduxjs/toolkit"
 import { playerReducer } from "@/store/features/playerSlice"
 import { userReducer } from "@/store/features/userSlice"
 
