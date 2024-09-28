@@ -21,9 +21,12 @@ interface Props {
 export default function Catalog({ params }: Props) {
   const dispatch = useAppDispatch()
   const { playlists, catalogName, filters } = useAppSelector((state) => state.player)
+  const [isLoading, setIsLoading] = useState<boolean>(true)
   const [errorMsg, setErrorMsg] = useState<ErrorMessage | null>(null)
 
   useEffect(() => {
+    setIsLoading(true)
+
     Promise.all([TracksAPI.getTracks(), TracksAPI.getCatalogTracks(params.id)])
       .then(([responseTracks, responseCategory]) => {
         if (isError(responseTracks))
@@ -34,6 +37,8 @@ export default function Catalog({ params }: Props) {
         dispatch(setPlaylist({ kind: "initial", playlist: responseTracks }))
         dispatch(setPlaylist({ kind: "visible", playlist: tracks }))
         dispatch(setCatalogName(responseCategory.name))
+
+        setIsLoading(false)
       })
       .catch((error: unknown) => {
         if (error instanceof Error)
@@ -47,7 +52,7 @@ export default function Catalog({ params }: Props) {
     <>
       <h2 className={styles.mainTitle}>{catalogName}</h2>
       <Filter visiblePlaylist={playlists.visible} filteredPlaylist={playlists.filtered} filters={filters} />
-      <Playlist playlist={playlists.sorted} errorMsg={errorMsg} />
+      <Playlist playlist={playlists.sorted} isLoading={isLoading} errorMsg={errorMsg} />
     </>
   )
 }

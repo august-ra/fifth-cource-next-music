@@ -36,7 +36,7 @@ export default function Home() {
     <>
       <h2 className={styles.mainTitle}>Любимые треки</h2>
       <Filter visiblePlaylist={playlists.visible} filteredPlaylist={playlists.filtered} filters={filters} />
-      <Playlist playlist={playlists.sorted} errorMsg={null} />
+      <Playlist playlist={playlists.sorted} isLoading={false} errorMsg={null} />
     </>
   )
 }

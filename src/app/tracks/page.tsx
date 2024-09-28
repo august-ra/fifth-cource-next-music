@@ -16,9 +16,12 @@ import { ErrorMessage, isError } from "@/types/errorsTypes"
 export default function Home() {
   const dispatch  = useAppDispatch()
   const { playlists, filters } = useAppSelector((state) => state.player)
+  const [isLoading, setIsLoading] = useState<boolean>(true)
   const [errorMsg, setErrorMsg] = useState<ErrorMessage | null>(null)
 
   useEffect(() => {
+    setIsLoading(true)
+
     TracksAPI.getTracks()
       .then((data) => {
         if (isError(data)) {
@@ -29,6 +32,8 @@ export default function Home() {
 
         dispatch(setPlaylist({ kind: "initial", playlist: data }))
         dispatch(setPlaylist({ kind: "visible", playlist: data }))
+
+        setIsLoading(false)
       })
       .catch((error: unknown) => {
         if (error instanceof Error)
@@ -42,7 +47,7 @@ export default function Home() {
     <>
       <h2 className={styles.mainTitle}>Треки</h2>
       <Filter visiblePlaylist={playlists.visible} filteredPlaylist={playlists.filtered} filters={filters} />
-      <Playlist playlist={playlists.sorted} errorMsg={errorMsg} />
+      <Playlist playlist={playlists.sorted} isLoading={isLoading} errorMsg={errorMsg} />
     </>
   )
 }

@@ -5,6 +5,7 @@ import styles from "./Sidebar.module.css"
 import Image from "next/image"
 import Link from "next/link"
 import SidebarPersonal from "@components/Sidebar/SidebarPersonal/SidebarPersonal"
+import SidebarSkeleton from "@components/SidebarSkeleton/SidebarSkeleton"
 
 import React from "react"
 import { useAppSelector } from "@/store/store"
@@ -23,22 +24,26 @@ function Sidebar() {
 
       <div className={styles.sidebarList}>
         {
-          catalogs.map((catalog) => {
-            const details: CatalogImageDetails = catalogsImages[catalog.name as CatalogsOptions]
+          catalogs && catalogs.length
+            ? catalogs.map((catalog) => {
+              const details: CatalogImageDetails = catalogsImages[catalog.name as CatalogsOptions]
 
-            if (catalog.name === catalogName)
-              return (
-                <div key={catalog._id}>
-                  <Image src={details.path} alt={details.alt} width={250} height={150} />
-                </div>
-              )
-            else
-              return (
-                <Link key={catalog._id} href={`/tracks/catalogs/${catalog._id}`}>
-                  <Image src={details.path} alt={details.alt} width={250} height={150} />
-                </Link>
-              )
-          })
+              if (catalog.name === catalogName)
+                return (
+                  <div key={catalog._id}>
+                    <Image src={details.path} alt={details.alt} width={250} height={150} />
+                  </div>
+                )
+              else
+                return (
+                  <Link key={catalog._id} href={`/tracks/catalogs/${catalog._id}`}>
+                    <Image src={details.path} alt={details.alt} width={250} height={150} />
+                  </Link>
+                )
+            })
+            : (
+              <SidebarSkeleton />
+            )
         }
       </div>
     </div>
