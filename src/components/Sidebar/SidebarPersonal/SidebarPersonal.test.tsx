@@ -3,9 +3,13 @@ import SidebarPersonal from "./SidebarPersonal"
 import "@testing-library/jest-dom"
 import { screen } from "@testing-library/react"
 import { renderWithProviders } from "@/utils/tests"
+import { TracksAPI } from "@/api/tracks"
 import { TokensPair, UserType } from "@/types/usersTypes"
 import { getEmptyError } from "@/types/errorsTypes"
 
+TracksAPI.requestToEndPoint = jest
+  .fn()
+  .mockImplementation(() => Promise.resolve([]))
 
 function renderSidebarPersonal(username: string) {
   const user: UserType = {
