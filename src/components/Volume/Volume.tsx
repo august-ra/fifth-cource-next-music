@@ -4,14 +4,14 @@ import styles from "./Volume.module.css"
 import shared from "@/components/SharedButtons/SharedButtons.module.css"
 import cn from "classnames"
 
-import { ChangeEvent, RefObject, useEffect, useState } from "react"
+import React, { ChangeEvent, RefObject, useEffect, useState } from "react"
 
 
 interface Props {
   audioRef: RefObject<HTMLAudioElement>
 }
 
-export default function Volume({ audioRef }: Props) {
+function Volume({ audioRef }: Props) {
   const [volume, setVolume] = useState<number>(0.5)
 
   useEffect(() => {
@@ -34,3 +34,5 @@ export default function Volume({ audioRef }: Props) {
     </div>
   )
 }
+
+export default React.memo(Volume)

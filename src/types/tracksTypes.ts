@@ -8,6 +8,7 @@ export interface TrackType {
   name:                string
   author:              string
   release_date:        string
+  release_value:       number
   genre:               string[]
   duration_in_seconds: number
   album:               string
@@ -18,6 +19,11 @@ export interface TrackType {
   }
   track_file:          string
   staredUser:          UserType[]
+}
+
+export interface TrackIndex {
+  _id: number
+  num: number
 }
 
 export interface CatalogType {
@@ -49,10 +55,16 @@ export type CatalogsOptions = keyof CatalogsImagesDetails
 
 /* enumerations */
 
-export enum FilterKind {
-  artist = "исполнителю",
-  genre  = "жанру",
-  year   = "году выпуска",
+export enum SortOptions {
+  disabled = "По умолчанию", // 0,
+  newOnTop = "Сначала новые", // 1,
+  oldOnTop = "Сначала старые", // 2,
+}
+
+export enum FilterKinds {
+  authors = "исполнителю",
+  genres  = "жанру",
+  year    = "году выпуска",
 }
 
 /* constants */

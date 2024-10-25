@@ -2,10 +2,10 @@ import { UserAPI } from "@/api/users"
 import { CatalogsCollectionType, CatalogType, PlaylistType } from "@/types/tracksTypes"
 import { TokensPair } from "@/types/usersTypes"
 import { ErrorMessage, getEmptyError } from "@/types/errorsTypes"
+import URI from "@/utils/constants"
 
 
 export const TracksAPI = {
-  uri:   "https://webdev-music-003b5b991590.herokuapp.com",
   error: getEmptyError(),
 
 
@@ -41,7 +41,7 @@ export const TracksAPI = {
 
   async getTracks(): Promise<PlaylistType | ErrorMessage> {
     let status = 0
-    const endpoint = `${TracksAPI.uri}/catalog/track/all/`
+    const endpoint = `${URI}/catalog/track/all/`
 
     try {
       const response = await fetch(endpoint)
@@ -66,7 +66,7 @@ export const TracksAPI = {
 
 
   async getFavouriteTracks(tokens: TokensPair) {
-    const endpoint = `${TracksAPI.uri}/catalog/track/favorite/all/`
+    const endpoint = `${URI}/catalog/track/favorite/all/`
 
     return await TracksAPI.requestToEndPoint(endpoint, tokens.refresh, {
       headers: {
@@ -76,7 +76,7 @@ export const TracksAPI = {
   },
 
   async getCatalogs(): Promise<CatalogsCollectionType> {
-    const endpoint = `${TracksAPI.uri}/catalog/selection/all/`
+    const endpoint = `${URI}/catalog/selection/all/`
 
     const data = await TracksAPI.requestToEndPoint(endpoint, null, {})
     data.sort((lhs: CatalogType, rhs: CatalogType) => lhs._id - rhs._id)
@@ -85,14 +85,14 @@ export const TracksAPI = {
   },
 
   async getCatalogTracks(catalogId: string): Promise<CatalogType> {
-    const endpoint = `${TracksAPI.uri}/catalog/selection/${catalogId}/`
+    const endpoint = `${URI}/catalog/selection/${catalogId}/`
 
     return await TracksAPI.requestToEndPoint(endpoint, null, {})
   },
 
 
   async changeLikeTrack(trackId: number, isLiked: boolean, tokens: TokensPair) {
-    const endpoint = `${this.uri}/catalog/track/${trackId}/favorite/`
+    const endpoint = `${URI}/catalog/track/${trackId}/favorite/`
 
     return await TracksAPI.requestToEndPoint(endpoint, tokens.refresh, {
       method: isLiked ? "POST" : "DELETE",

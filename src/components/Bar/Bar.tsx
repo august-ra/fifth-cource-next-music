@@ -6,10 +6,10 @@ import Player from "@components/Player/Player"
 import ProgressBar from "@components/Bar/ProgressBar/ProgressBar"
 import Volume from "@components/Volume/Volume"
 
-import { ChangeEvent, useEffect, useRef, useState } from "react"
+import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react"
 import { useAppDispatch, useAppSelector } from "@/store/store"
-import { selectNextTrack, selectPrevTrack, setIsPaused, toggleIsShuffled } from "@/store/features/playlistSlice"
-import { getEmptyTrack } from "@/store/features/playlistSlice"
+import { selectNextTrack, selectPrevTrack, setIsPaused, toggleIsShuffled } from "@/store/features/playerSlice"
+import { getEmptyTrack } from "@/store/features/playerSlice"
 import { printTime } from "@/utils/datetime"
 
 
@@ -17,7 +17,7 @@ export default function Bar() {
   const dispatch = useAppDispatch()
   const [isLooped, setIsLooped] = useState<boolean>(false)
   const [position, setPosition] = useState<number>(0)
-  const currentTrack = useAppSelector((state) => state.playlist.currentTrack)
+  const currentTrack = useAppSelector((state) => state.player.currentTrack)
   const audioRef = useRef<HTMLAudioElement>(null)
 
   const currentAudio = audioRef?.current
@@ -39,7 +39,7 @@ export default function Bar() {
     }
   }, [isLooped])
 
-  function togglePlay() {
+  const togglePlay = useCallback(() => {
     if (!currentAudio || !currentTrack || !currentTrack._id)
       return
 
@@ -49,37 +49,24 @@ export default function Bar() {
       currentAudio.pause()
 
     dispatch(setIsPaused(currentAudio.paused))
-  }
+  }, [currentTrack])
 
-  function toggleLoop() {
-    setIsLooped((prev) => !prev)
-  }
+  const toggleLoop = useCallback(() => setIsLooped((prev) => !prev), [])
 
-  function toggleShuffled() {
-    dispatch(toggleIsShuffled())
-  }
+  const toggleShuffled = useCallback(() => dispatch(toggleIsShuffled()), [])
 
-  function handleTimeUpdate(event: ChangeEvent<HTMLAudioElement>) {
+  const handleTimeUpdate = useCallback((event: ChangeEvent<HTMLAudioElement>) => {
     setPosition(event.currentTarget.currentTime)
-  }
+  }, [])
 
-  function handleSeek(event: ChangeEvent<HTMLInputElement>) {
-    if (currentAudio)
-      currentAudio.currentTime = Number(event.target.value)
-  }
-
-  function goNextTrack() {
+  const goNextTrack = useCallback(() => {
     if (!isLooped)
-      dispatch(selectNextTrack(true))
-  }
+      handleNextTrack()
+  }, [isLooped])
 
-  function handleNextTrack() {
-    dispatch(selectNextTrack(false))
-  }
+  const handleNextTrack = useCallback(() => dispatch(selectNextTrack()), [])
 
-  function handlePrevTrack() {
-    dispatch(selectPrevTrack())
-  }
+  const handlePrevTrack = useCallback(() => dispatch(selectPrevTrack()), [])
 
   return (
     <div className={styles.bar}>
@@ -87,7 +74,7 @@ export default function Bar() {
         <audio className={styles.barAudio} src={currentTrack?.track_file}
                ref={audioRef} onTimeUpdate={handleTimeUpdate} onEnded={goNextTrack} />
 
-        <ProgressBar max={currentAudio?.duration || 0} position={position} handleSeek={handleSeek} />
+        <ProgressBar audioRef={audioRef} defaultMax={0} position={position} />
 
         <div className={styles.barPlayer}>
           <Player currentTrack={currentTrack ?? getEmptyTrack()} isLooped={isLooped}

@@ -5,7 +5,7 @@ import shared from "@/components/SharedButtons/SharedButtons.module.css"
 import cn from "classnames"
 
 import { useAppDispatch, useAppSelector } from "@/store/store"
-import { setActivePlaylistAndTrackInside } from "@/store/features/playlistSlice"
+import { setActivePlaylistAndTrackInside } from "@/store/features/playerSlice"
 import { useLikeButton } from "@/hooks/useLikeButton"
 import { PlaylistType, TrackType } from "@/types/tracksTypes"
 import { printTime } from "@/utils/datetime"
@@ -18,8 +18,16 @@ interface Props {
 
 export default function Track({ playlist, track }: Props) {
   const dispatch = useAppDispatch()
-  const { currentTrack, isPaused } = useAppSelector((state) => state.playlist)
+  const { playlists, currentTrack, isPaused, isShuffled } = useAppSelector((state) => state.player)
   const { isLiked, onLike } = useLikeButton(track)
+
+  function getIndex(track: TrackType) {
+    for (const record of playlists.indexes)
+      if (record._id === track._id)
+        return record.num
+
+    return null
+  }
 
   function handleTrackClick() {
     dispatch(setActivePlaylistAndTrackInside({ playlist, track }))
@@ -32,28 +40,30 @@ export default function Track({ playlist, track }: Props) {
       <div className={styles.track}>
         <div className={styles.trackTitle}>
           <div className={styles.trackTitleImage}>
-            <svg>
-              <use xlinkHref="/img/icon/sprite.svg#icon-note" />
-            </svg>
             {
-              isCurrent
-                && (
-                  <div className={cn(styles.trackMark, { [styles.animated]: !isPaused })} />
+              isCurrent || isShuffled
+                ? (
+                  isCurrent
+                    ? (
+                      <div className={cn(styles.trackMark, { [styles.animated]: !isPaused })} />
+                    )
+                    : (
+                      <div className={cn(styles.trackMark, styles.trackNum)}>{getIndex(track)}</div>
+                    )
+                )
+                : (
+                  <svg>
+                    <use xlinkHref="/img/icon/sprite.svg#icon-note" />
+                  </svg>
                 )
             }
           </div>
           <div className={styles.trackTitleText}>
-            <a className={styles.trackTitleLink} href="http://">
-              {track.name} {/*<span>{additionals}</span>*/}
-            </a>
+            {track.name} {/*<span>{additionals}</span>*/}
           </div>
         </div>
-        <div className={styles.trackAuthor}>
-          <a className={styles.trackAuthorLink} href="http://">{track.author}</a>
-        </div>
-        <div className={styles.trackAlbum}>
-          <a className={styles.trackAlbumLink} href="http://">{track.album}</a>
-        </div>
+        <div className={styles.trackAuthor}>{track.author}</div>
+        <div className={styles.trackAlbum}>{track.album}</div>
         <div className={styles.trackTime}>
           <div className={cn(shared.btnIcon, { [shared.liked]: isLiked })} onClick={onLike}>
             <svg>

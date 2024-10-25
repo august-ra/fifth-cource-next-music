@@ -1,6 +1,6 @@
-import { redirect } from 'next/navigation'
+import { redirect } from "next/navigation"
 
 
 export async function GET(request: Request) {
-  redirect('./sign/in')
+  redirect("./sign/in")
 }

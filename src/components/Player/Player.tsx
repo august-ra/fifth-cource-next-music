@@ -1,3 +1,5 @@
+"use client"
+
 import styles from "./Player.module.css"
 import shared from "@/components/SharedButtons/SharedButtons.module.css"
 import cn from "classnames"
@@ -19,7 +21,7 @@ interface Props {
 }
 
 export default function Player({ currentTrack, isLooped, togglePlay, toggleLoop, toggleShuffle, handlePrev, handleNext }: Props) {
-  const { isPaused, isShuffled } = useAppSelector((state) => state.playlist)
+  const { isPaused, isShuffled } = useAppSelector((state) => state.player)
   const state = isPaused ? "play" : "pause"
 
   return (

@@ -1,6 +1,6 @@
 import React from "react"
 import { useAppDispatch, useAppSelector } from "@/store/store"
-import { dislikeTrack, likeTrack } from "@/store/features/playlistSlice"
+import { dislikeTrack, likeTrack } from "@/store/features/playerSlice"
 import { TracksAPI } from "@/api/tracks"
 import { TrackType } from "@/types/tracksTypes"
 
@@ -13,7 +13,7 @@ interface HookResult {
 export function useLikeButton(currentTrack: TrackType): HookResult {
   const dispatch        = useAppDispatch()
   const tokens          = useAppSelector((state) => state.user.tokens)
-  const favouriteTracks = useAppSelector((state) => state.playlist.favouriteTracks)
+  const favouriteTracks = useAppSelector((state) => state.player.playlists.favourite)
 
   const isLiked: boolean = Boolean(tokens.access && favouriteTracks.find((track) => track._id === currentTrack._id))
 

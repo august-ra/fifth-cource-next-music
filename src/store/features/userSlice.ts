@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
 
 import { UserAPI } from "@/api/users"
+import type { RootState } from "@/store/store"
 import { TokensPair, UserType } from "@/types/usersTypes"
 import { ErrorMessage, getEmptyError, isError } from "@/types/errorsTypes"
 
@@ -73,7 +74,7 @@ export const userSlice = createSlice({
           state.tokens.refresh = null
         } else {
           state.errorMsg = getEmptyError()
-          state.tokens.access = action.payload.access
+          state.tokens.access  = action.payload.access
           state.tokens.refresh = action.payload.refresh
         }
       })
@@ -90,6 +91,7 @@ export const userSlice = createSlice({
   },
 })
 
+export const checkToken = (state: RootState) => Boolean(state.user.tokens.access)
 export { signIn, signUp, getTokens, refreshTokens }
 export const { publicError, signOut } = userSlice.actions
 export const userReducer = userSlice.reducer

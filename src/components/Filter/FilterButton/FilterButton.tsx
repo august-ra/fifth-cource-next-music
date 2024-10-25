@@ -6,22 +6,32 @@ import FilterList from "@components/Filter/FilterList/FilterList"
 
 
 interface Props {
-  title:      string
-  opened:     boolean
-  filterList: string[]
-  openFilter: (filter: string) => void
+  title:          string
+  filterList:     string[]
+  filterCounters: Record<string, number>
+  activeCounter:  number
+  opened:         boolean
+  openFilter:     (filter: string) => void
 }
 
-export default function FilterButton({ title, opened, filterList, openFilter }: Props) {
+export default function FilterButton({ title, filterList, filterCounters, activeCounter, opened, openFilter }: Props) {
   return (
     <div className={styles.filterButtonWrapper}>
-      <div className={cn(styles.filterButton, shared.btnText)} onClick={() => openFilter(title)}>
+      <div className={cn(styles.filterButton, shared.btnText, { [shared.active] : activeCounter })} onClick={() => openFilter(title)}>
         {title}
       </div>
+
+      {
+        activeCounter > 0
+          && (
+            <button type="button" className={styles.filterCounter}>{activeCounter}</button>
+          )
+      }
+
       {
         opened
           && (
-            <FilterList filterOptions={filterList} />
+            <FilterList title={title} filterOptions={filterList} filterCounters={filterCounters} />
           )
       }
     </div>
