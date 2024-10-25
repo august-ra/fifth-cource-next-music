@@ -22,4 +22,96 @@
 
 .volumeProgress {
   width: 109px;
+  height: 12px;
+
+  /* range */
+
+  -webkit-appearance: none;
+  appearance: none;
+  margin: 10px 0;
+
+  &:focus {
+    outline: none;
+  }
+
+  &::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 12px;
+    cursor: pointer;
+    transition: 0.2s;
+    background: #FFFFFF;
+    border-block: 5px solid var(--bar-back);
+  }
+
+  &::-webkit-slider-thumb {
+    border: 2px solid #FFFFFF;
+    height: 12px;
+    width: 12px;
+    border-radius: 6px;
+    background: #000000;
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+    margin-top: -5px;
+  }
+
+  &:focus::-webkit-slider-runnable-track {
+    background: #FFFFFF;
+  }
+
+  &::-moz-range-track {
+    width: 100%;
+    height: 12px;
+    cursor: pointer;
+    transition: 0.2s;
+    background: #FFFFFF;
+    border-block: 5px solid var(--bar-back);
+  }
+
+  &::-moz-range-thumb {
+    border: 2px solid #FFFFFF;
+    height: 12px;
+    width: 12px;
+    border-radius: 6px;
+    background: #000000;
+    cursor: pointer;
+  }
+
+  &::-ms-track {
+    width: 100%;
+    height: 12px;
+    cursor: pointer;
+    transition: 0.2s;
+    background: transparent;
+    border-color: transparent;
+    color: transparent;
+  }
+
+  &::-ms-fill-lower {
+    background: #FFFFFF;
+    border-block: 5px solid var(--bar-back);
+  }
+
+  &::-ms-fill-upper {
+    background: #FFFFFF;
+    border-block: 5px solid var(--bar-back);
+  }
+
+  &::-ms-thumb {
+    margin-top: 1px;
+    border: 2px solid #FFFFFF;
+    height: 12px;
+    width: 12px;
+    border-radius: 6px;
+    background: #000000;
+    cursor: pointer;
+  }
+
+  &:focus::-ms-fill-lower {
+    background: #FFFFFF;
+  }
+
+  &:focus::-ms-fill-upper {
+    background: #FFFFFF;
+  }
 }

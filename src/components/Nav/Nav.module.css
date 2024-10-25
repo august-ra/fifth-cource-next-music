@@ -1,7 +1,7 @@
 
 .nav {
   width: 244px;
-  background-color: #181818;
+  background-color: var(--site-back);
   padding: 20px 0 20px 36px;
 }
 
@@ -17,7 +17,7 @@
 .logoImage {
   width: 114px;
   height: 17px;
-  color: #181818;
+  color: var(--site-back);
 }
 
 .burger {
